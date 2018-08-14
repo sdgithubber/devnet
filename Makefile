@@ -25,8 +25,5 @@ install:
 
 run:
 
-clean:
-	@rm -rf $(shell pwd)/web && mkdir web
-
 build:
-	@docker build -f $(shell pwd)/web/docker/Dockerfile.cron -t spacemesh/devnet_agent:latest .
+	@docker build -f $(shell pwd)/agent/Dockerfile -t spacemesh/devnet_agent:latest .
