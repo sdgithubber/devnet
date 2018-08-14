@@ -23,6 +23,8 @@ install:
 	@make build
 
 run:
+	@docker run --network=worker_net --name agent -p 80:80 -v $(shell pwd)/tests:/opt/devnet spacemesh/devnet_agent:latest /opt/devnet/basic_test_agent.py  >> $(shell pwd)/test.log 2>&1 &
+	@docker run --network=worker_net --name test_server -v $(shell pwd)/tests:/opt/devnet spacemesh/devnet_agent:latest /opt/devnet/basic_test_ci.py >> $(shell pwd)/test.log 2>&1 &
 
 build:
 	@docker build -f $(shell pwd)/agent/Dockerfile -t spacemesh/devnet_agent:latest .
