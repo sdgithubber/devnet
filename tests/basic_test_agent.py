@@ -27,7 +27,8 @@ MESSAGES = []
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
-        return json.dumps(MESSAGES)
+#        return json.dumps(MESSAGES), 200
+        return "OK", 200
 
     data = request.form.get('payload', 'Example payload').encode('utf-8')
 
