@@ -27,9 +27,11 @@ MESSAGES = []
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
+        print("GET")
 #        return json.dumps(MESSAGES), 200
         return "OK", 200
 
+    print("POST")
     data = request.form.get('payload', 'Example payload').encode('utf-8')
 
     publisher = pubsub_v1.PublisherClient()
