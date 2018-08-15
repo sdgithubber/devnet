@@ -5,3 +5,4 @@ RUN pip3 install --upgrade pip
 RUN pip3 install flask google-cloud google-cloud-pubsub
 RUN mkdir /opt/devnet
 WORKDIR /opt/devnet
+EXPOSE 8080
