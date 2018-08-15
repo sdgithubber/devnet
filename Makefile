@@ -25,9 +25,9 @@ install:
 run:
 	@if [ ! "$(sudo docker network ls | grep devnet)" ]; then sudo docker network create devnet || true; fi
 	@(docker stop agent && docker rm agent) || echo "" &&\
-	docker run --network=devnet --name agent -p 80:80 -v $(shell pwd)/tests:/opt/devnet spacemesh/devnet_agent:latest python3 /opt/devnet/basic_test_agent.py  >> $(shell pwd)/test.log 2>&1 &
+	docker run --network=devnet --name agent -p 80:80 -e PUBSUB_VERIFICATION_TOKEN='1234' -e PUBSUB_TOPIC='topic' -e GOOGLE_CLOUD_PROJECT='spacemesh-198810' -v $(shell pwd)/tests:/opt/devnet spacemesh/devnet_agent:latest python3 /opt/devnet/basic_test_agent.py  >> $(shell pwd)/test.log 2>&1 &
 	@(docker stop test_server && docker rm test_server) || echo "" &&\
-		docker run --network=devnet --name test_server -v $(shell pwd)/tests:/opt/devnet spacemesh/devnet_agent:latest python3 /opt/devnet/basic_test_ci.py >> $(shell pwd)/test.log 2>&1 &
+		docker run --network=devnet --name test_server -e PUBSUB_VERIFICATION_TOKEN='1234' -e PUBSUB_TOPIC='topic' -e GOOGLE_CLOUD_PROJECT='spacemesh-198810' -v $(shell pwd)/tests:/opt/devnet spacemesh/devnet_agent:latest python3 /opt/devnet/basic_test_ci.py >> $(shell pwd)/test.log 2>&1 &
 
 build:
 	@docker build -f $(shell pwd)/agent/Dockerfile -t spacemesh/devnet_agent:latest .
