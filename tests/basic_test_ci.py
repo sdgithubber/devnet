@@ -1,3 +1,5 @@
+from google.cloud import pubsub_v1
+
 subscriber = pubsub_v1.SubscriberClient()
 subscription_path = subscriber.subscription_path(
     project, subscription_name)
