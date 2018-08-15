@@ -4,7 +4,7 @@ from google.cloud import pubsub_v1
 
 subscriber = pubsub_v1.SubscriberClient()
 subscription_path = subscriber.subscription_path(
-    os.environ['GOOGLE_CLOUD_PROJECT'], subscription_name)
+    os.environ['GOOGLE_CLOUD_PROJECT'], "ci_subscription_name")
 
 def callback(message):
     print('Received message: {}'.format(message))
