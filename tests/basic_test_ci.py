@@ -1,3 +1,5 @@
+import os
+
 from google.cloud import pubsub_v1
 
 subscriber = pubsub_v1.SubscriberClient()
