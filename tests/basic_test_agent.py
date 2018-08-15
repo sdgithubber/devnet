@@ -3,6 +3,7 @@ import base64
 import json
 import logging
 import os
+import json
 
 from flask import current_app, Flask, render_template, request
 from google.cloud import pubsub_v1
@@ -26,7 +27,7 @@ MESSAGES = []
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
-        return render_template('index.html', messages=MESSAGES)
+        return json.dumps(MESSAGES)
 
     data = request.form.get('payload', 'Example payload').encode('utf-8')
 
