@@ -1,5 +1,5 @@
 import os
-from time import sleep
+import time
 
 from google.cloud import pubsub_v1
 
