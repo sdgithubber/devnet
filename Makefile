@@ -15,7 +15,7 @@ help:
 
 install:
 	@apt update
-	@apt install curl software-properties-common -y
+	@apt install curl software-properties-common apt-transport-https -y
 	@curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 	@add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(shell lsb_release -cs) stable"
 	@apt update
