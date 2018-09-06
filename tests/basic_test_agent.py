@@ -8,7 +8,7 @@
 from google.cloud import pubsub_v1
 
 project = 'spacemesh-198810'
-topic_name = 'devnet'
+topic_name = 'devnet_tests'
 publisher = pubsub_v1.PublisherClient()
 topic_path = publisher.topic_path(project, topic_name)
 data = u'Send Message'
