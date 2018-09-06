@@ -2,10 +2,10 @@ import os
 import time
 
 from google.cloud import pubsub_v1
-
+project = 'spacemesh-198810'
+subscription_name = 'devnet_ci'
 subscriber = pubsub_v1.SubscriberClient()
-subscription_path = subscriber.subscription_path(
-    os.environ['GOOGLE_CLOUD_PROJECT'], "ci_subscription_name")
+subscription_path = subscriber.subscription_path(project, subscription_name)
 
 def callback(message):
     print('Received message: {}'.format(message))
@@ -18,4 +18,3 @@ subscriber.subscribe(subscription_path, callback=callback)
 print('Listening for messages on {}'.format(subscription_path))
 while True:
     time.sleep(60)
-
