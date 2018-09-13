@@ -13,7 +13,7 @@ class Test0(unittest.TestCase):
         self.subscription_path = self.subscriber.subscription_path(project, subscription_name)
 
     def callback(self, message):
-        self.message = '{}'.format(message)
+        self.message = '{}'.format(message.data)
         message.ack()
 
     def test_verifyUp(self):
