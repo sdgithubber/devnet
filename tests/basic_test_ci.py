@@ -16,7 +16,7 @@ class Test0(unittest.TestCase):
         self.message = '{}'.format(message)
         message.ack()
 
-    def test_verifyHi(self):
+    def test_verifyUp(self):
         self.subscriber.subscribe(self.subscription_path, callback=self.callback)
         print('Listening for messages on {}'.format(self.subscription_path))
         time.sleep(self.testLen)
