@@ -10,7 +10,7 @@ class Test0(unittest.TestCase):
         project = 'spacemesh-198810'
         subscription_name = 'devnet_tests_ci'
         self.subscriber = pubsub_v1.SubscriberClient()
-        self.subscription_path = subscriber.subscription_path(project, subscription_name)
+        self.subscription_path = self.subscriber.subscription_path(project, subscription_name)
 
     def callback(message):
         self.message = '{}'.format(message)
