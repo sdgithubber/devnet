@@ -18,9 +18,7 @@ class Test0(unittest.TestCase):
 
     def test_verifyUp(self):
         self.subscriber.subscribe(self.subscription_path, callback=self.callback)
-        print('Listening for messages on {}'.format(self.subscription_path))
         time.sleep(self.testLen)
-        print('test: ' + self.message)
         self.assertEqual('UP', self.message)
 
 if __name__ == '__main__':
