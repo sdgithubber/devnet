@@ -17,4 +17,5 @@ subscriber.subscribe(subscription_path, callback=callback)
 # exiting to allow it to process messages in the background.
 print('Listening for messages on {}'.format(subscription_path))
 while True:
+    print("in the loop")
     time.sleep(60)
