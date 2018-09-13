@@ -20,7 +20,7 @@ class Test0(unittest.TestCase):
         self.subscriber.subscribe(self.subscription_path, callback=self.callback)
         print('Listening for messages on {}'.format(self.subscription_path))
         time.sleep(self.testLen)
-        print('test: ' . self.message)
+        print('test: ' + self.message)
         self.assertEquals('UP', self.message)
 
 if __name__ == '__main__':
