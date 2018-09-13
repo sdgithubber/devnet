@@ -12,7 +12,7 @@ class Test0(unittest.TestCase):
         self.subscriber = pubsub_v1.SubscriberClient()
         self.subscription_path = self.subscriber.subscription_path(project, subscription_name)
 
-    def callback(message):
+    def callback(self, message):
         self.message = '{}'.format(message)
         message.ack()
 
