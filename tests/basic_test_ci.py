@@ -1,20 +1,26 @@
 import os
 import time
 from google.cloud import pubsub_v1
+import unittest
 
-test_len = 60
-project = 'spacemesh-198810'
-subscription_name = 'devnet_tests_ci'
-subscriber = pubsub_v1.SubscriberClient()
-subscription_path = subscriber.subscription_path(project, subscription_name)
+class Test0(unittest.TestCase):
+    def setUp(self):
+        self.testLen = 10
+        self.message = ''
+        project = 'spacemesh-198810'
+        subscription_name = 'devnet_tests_ci'
+        subscriber = pubsub_v1.SubscriberClient()
+        subscription_path = subscriber.subscription_path(project, subscription_name)
 
-def callback(message):
-    print('Received message: {}'.format(message))
-    message.ack()
+    def callback(message):
+        self.message = '{}'.format(message)
+        message.ack()
 
-subscriber.subscribe(subscription_path, callback=callback)
+    def test_verifyHi(self):
+        subscriber.subscribe(subscription_path, callback=self.callback)
+        print('Listening for messages on {}'.format(subscription_path))
+        time.sleep(self.testLen)
+        self.assertEquals('UP', self.message)
 
-# The subscriber is non-blocking, so we must keep the main thread from
-# exiting to allow it to process messages in the background.
-print('Listening for messages on {}'.format(subscription_path))
-time.sleep(test_len)
+if __name__ == '__main__':
+    unittest.main()

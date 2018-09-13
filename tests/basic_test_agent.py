@@ -11,7 +11,7 @@ project = 'spacemesh-198810'
 topic_name = 'devnet_tests'
 publisher = pubsub_v1.PublisherClient()
 topic_path = publisher.topic_path(project, topic_name)
-data = u'Send Message'
+data = 'UP'
 data = data.encode('utf-8')
 publisher.publish(topic_path, data=data)
 print('Published messages.')
