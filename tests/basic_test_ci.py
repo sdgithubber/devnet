@@ -9,16 +9,16 @@ class Test0(unittest.TestCase):
         self.message = ''
         project = 'spacemesh-198810'
         subscription_name = 'devnet_tests_ci'
-        subscriber = pubsub_v1.SubscriberClient()
-        subscription_path = subscriber.subscription_path(project, subscription_name)
+        self.subscriber = pubsub_v1.SubscriberClient()
+        self.subscription_path = subscriber.subscription_path(project, subscription_name)
 
     def callback(message):
         self.message = '{}'.format(message)
         message.ack()
 
     def test_verifyHi(self):
-        subscriber.subscribe(subscription_path, callback=self.callback)
-        print('Listening for messages on {}'.format(subscription_path))
+        self.subscriber.subscribe(self.subscription_path, callback=self.callback)
+        print('Listening for messages on {}'.format(self.subscription_path))
         time.sleep(self.testLen)
         self.assertEquals('UP', self.message)
 
