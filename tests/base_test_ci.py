@@ -18,7 +18,8 @@ class Test0(unittest.TestCase):
 
     def test_verifyUp(self):
         self.subscriber.subscribe(self.subscription_path, callback=self.callback)
-        time.sleep(self.testLen)
+        for i in range[0, self.testLen]:
+            time.sleep(1)
         self.assertEqual(b'UP', self.message)
 
 if __name__ == '__main__':
