@@ -21,7 +21,7 @@ class BaseDevnetAgent:
         for line in open('/opt/logs/node.log', "r", encoding="utf-8"):
             results = pattern.match(line)
             #print("results:" + line.encode('utf-8').decode()))
-			print("results:")
+            print("results:")
             if results != None:
                 print("results2:" + results.group(1))
                 node_id = results.group(1)
