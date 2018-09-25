@@ -1,7 +1,7 @@
 import config
 from google.cloud import pubsub_v1
 
-class BaseDevnetAGent:
+class BaseDevnetAgent:
     def __init__(self):
         project = config.CONFIG['project']
         topic_name = config.CONFIG['topic_name']
@@ -13,5 +13,5 @@ class BaseDevnetAGent:
         self.publisher.publish(self.topic_path, data=data)
 
 if __name__ == '__main__':
-    t = BaseDevnetAGent()
+    t = BaseDevnetAgent()
     t.send('UP')
