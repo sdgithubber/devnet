@@ -35,4 +35,4 @@ run:
 build:
 	@docker build -f $(shell pwd)/agent/Dockerfile -t spacemesh/devnet_agent:latest .
 	@wget https://github.com/spacemeshos/go-spacemesh/blob/develop/Dockerfile -O Dockerfile.spacemesh.node
-	@docker build -f $(shell pwd)/agent/Dockerfile.spacemesh.node -t spacemesh/node:latest .
+	@docker build -f $(shell pwd)/Dockerfile.spacemesh.node -t spacemesh/node:latest .
