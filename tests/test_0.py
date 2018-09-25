@@ -1,4 +1,4 @@
-import base_test_ci
+from base_test_ci import BaseTest
 
 class Test0(BaseTest):
     def test_verifyUp(self):
