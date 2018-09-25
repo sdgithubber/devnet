@@ -1,11 +1,17 @@
 import config
 from google.cloud import pubsub_v1
 
-project = config.CONFIG['project']
-subscription_name = config.CONFIG['subscription_name']
-topic_name = config.CONFIG['topic_name']
-publisher = pubsub_v1.PublisherClient()
-topic_path = publisher.topic_path(project, topic_name)
-data = 'UP'
-data = data.encode('utf-8')
-publisher.publish(topic_path, data=data)
+class BaseDevnetAGent:
+    def __init__(self):
+        project = config.CONFIG['project']
+        topic_name = config.CONFIG['topic_name']
+        self.publisher = pubsub_v1.PublisherClient()
+        self.topic_path = self.publisher.topic_path(project, topic_name)
+
+    def send(self, data):
+        data = data.encode('utf-8')
+        this.publisher.publish(this.topic_path, data=data)
+
+if __name__ == '__main__':
+    t = BaseDevnetAGent()
+    t.send('UP')
