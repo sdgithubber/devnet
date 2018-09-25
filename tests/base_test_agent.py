@@ -10,7 +10,7 @@ class BaseDevnetAGent:
 
     def send(self, data):
         data = data.encode('utf-8')
-        this.publisher.publish(this.topic_path, data=data)
+        self.publisher.publish(self.topic_path, data=data)
 
 if __name__ == '__main__':
     t = BaseDevnetAGent()
