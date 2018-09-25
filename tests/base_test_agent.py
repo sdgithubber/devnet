@@ -19,8 +19,8 @@ class BaseDevnetAgent:
         pattern = re.compile("[.]*NodeID (\w+)")
         node_id = ""
         for line in open('/opt/logs/node.log', "r", encoding="utf-8"):
-            print(line.decode().encode('utf-8'))
-            result = pattern.match(line.decode().encode('utf-8'))
+            print(line)
+            result = pattern.match(line)
             if results != None:
                 node_id = results.group(1)    
                 break;
