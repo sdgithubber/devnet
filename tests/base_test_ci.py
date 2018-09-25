@@ -7,7 +7,7 @@ import unittest
 class BaseTest(unittest.TestCase):
     def setUp(self):
         self.endFlag = False
-        self.testLen = 10
+        self.testLen = 60
         self.message = ''
         project = config.CONFIG['project']
         subscription_name = config.CONFIG['subscription_name']

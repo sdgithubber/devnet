@@ -15,7 +15,7 @@ class BaseDevnetAgent:
         self.publisher.publish(self.topic_path, data=data)
 
     def get_node_id(self):
-        time.sleep(5)
+        time.sleep(30)
         pattern = re.compile("[.]*NodeID (\w+)")
         node_id = ""
         for line in open('/opt/logs/node.log'):
