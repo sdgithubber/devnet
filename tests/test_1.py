@@ -14,7 +14,7 @@ class Test1(BaseTest):
                 break
             time.sleep(1)
 
-        self.assertNotEqual('NULL', self.message)
+        self.assertNotEqual(b'NULL', self.message)
         self.assertGreater(5, len(self.message))
 
 if __name__ == '__main__':

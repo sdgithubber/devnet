@@ -17,7 +17,7 @@ class BaseDevnetAgent:
     def get_node_id(self):
         time.sleep(30)
         pattern = re.compile("[.]*NodeID (\w+)")
-        node_id = "NULL"
+        node_id = b'NULL'
         for line in open('/opt/logs/node.log', "r", encoding="utf-8"):
             results = pattern.match(line)
             if results != None:
