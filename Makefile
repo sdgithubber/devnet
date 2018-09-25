@@ -28,7 +28,7 @@ run:
 	@(docker stop agent && docker rm agent) || echo "" &&\
 	docker run --network=devnet --name agent -p 8080:8080 -e PUBSUB_VERIFICATION_TOKEN='1234' -e PUBSUB_TOPIC='topic' -e GOOGLE_CLOUD_PROJECT='spacemesh-198810' -v $(shell pwd)/tests:/opt/devnet spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py  >> $(shell pwd)/test.log 2>&1 &
 	@(docker stop node && docker rm node) || echo "" &&\
-	docker run --network=devnet --name node -p 7513:7513 >> $(shell pwd)/node.log 2>&1 &
+	docker run --network=devnet --name node -p 7513:7513 /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh >> $(shell pwd)/node.log 2>&1 &
 	@(docker stop test_server && docker rm test_server) || echo "" &&\
 	docker run --network=devnet --name test_server -e PUBSUB_VERIFICATION_TOKEN='1234' -e PUBSUB_TOPIC='topic' -e GOOGLE_CLOUD_PROJECT='spacemesh-198810' -v $(shell pwd)/tests:/opt/devnet spacemesh/devnet_agent:latest python3 /opt/devnet/tests.py >> $(shell pwd)/test.log 2>&1 &
 
