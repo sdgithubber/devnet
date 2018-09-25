@@ -1,4 +1,5 @@
 from base_test_ci import BaseTest
+import unittest
 
 class Test0(BaseTest):
     def test_verifyUp(self):
@@ -10,4 +11,4 @@ class Test0(BaseTest):
             time.sleep(1)
 
 if __name__ == '__main__':
-    Test0.main()
+    unittest.main()
