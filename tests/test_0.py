@@ -10,4 +10,4 @@ class Test0(BaseTest):
             time.sleep(1)
 
 if __name__ == '__main__':
-    unittest.main()
+    Test0.main()
