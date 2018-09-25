@@ -23,7 +23,7 @@ install:
 	@make build
 
 run:
-	@mkdir $(shell pwd)/logs
+	@mkdir $(shell pwd)/logs || echo ''
 	@rm -rf $(shell pwd)/logs/*.log
 	@if [ ! "$(sudo docker network ls | grep devnet)" ]; then sudo docker network create devnet || true; fi
 	@(docker stop agent && docker rm agent) || echo "" &&\
