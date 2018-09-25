@@ -6,6 +6,7 @@ import unittest
 
 class Test0(unittest.TestCase):
     def setUp(self):
+        self.endFlag = False
         self.testLen = 10
         self.message = ''
         project = config.CONFIG['project']
@@ -16,12 +17,15 @@ class Test0(unittest.TestCase):
     def callback(self, message):
         self.message = message.data
         message.ack()
+        self.endFlag = True
 
     def test_verifyUp(self):
         self.subscriber.subscribe(self.subscription_path, callback=self.callback)
         for i in range(0, self.testLen):
+            if self.endFlag:
+                self.assertEqual(b'UP', self.message)
+                return
             time.sleep(1)
-        self.assertEqual(b'UP', self.message)
 
 if __name__ == '__main__':
     unittest.main()
