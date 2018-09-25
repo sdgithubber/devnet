@@ -20,6 +20,7 @@ class BaseDevnetAgent:
         node_id = 'NULL'
         for line in open('/opt/logs/node.log', "r", encoding="utf-8"):
             results = pattern.match(line)
+			print("results: " + results)
             if results != None:
                 node_id = results.group(1)    
                 break;
