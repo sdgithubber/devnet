@@ -3,6 +3,7 @@ from google.cloud import pubsub_v1
 
 project = config.CONFIG['project']
 subscription_name = config.CONFIG['subscription_name']
+topic_name = config.CONFIG['topic_name']
 publisher = pubsub_v1.PublisherClient()
 topic_path = publisher.topic_path(project, topic_name)
 data = 'UP'
