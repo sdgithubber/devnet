@@ -10,9 +10,10 @@ class Test0(BaseTest):
         self.subscriber.subscribe(self.subscription_path, callback=self.callback)
         for i in range(0, self.testLen):
             if self.endFlag:
-                self.assertEqual(b'UP', self.message)
                 return
             time.sleep(1)
+
+        self.assertEqual(b'UP', self.message)
 
 if __name__ == '__main__':
     unittest.main()
