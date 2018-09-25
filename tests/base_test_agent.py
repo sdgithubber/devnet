@@ -1,5 +1,4 @@
 import config
-import time
 from google.cloud import pubsub_v1
 
 class BaseDevnetAGent:
@@ -10,7 +9,6 @@ class BaseDevnetAGent:
         self.topic_path = self.publisher.topic_path(project, topic_name)
 
     def send(self, data):
-        time.sleep(3)
         data = data.encode('utf-8')
         self.publisher.publish(self.topic_path, data=data)
 
