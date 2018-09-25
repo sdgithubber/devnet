@@ -4,7 +4,7 @@ import time
 from google.cloud import pubsub_v1
 import unittest
 
-class Test0(unittest.TestCase):
+class BaseTest(unittest.TestCase):
     def setUp(self):
         self.endFlag = False
         self.testLen = 10
@@ -18,14 +18,6 @@ class Test0(unittest.TestCase):
         self.message = message.data
         message.ack()
         self.endFlag = True
-
-    def test_verifyUp(self):
-        self.subscriber.subscribe(self.subscription_path, callback=self.callback)
-        for i in range(0, self.testLen):
-            if self.endFlag:
-                self.assertEqual(b'UP', self.message)
-                return
-            time.sleep(1)
 
 if __name__ == '__main__':
     unittest.main()
