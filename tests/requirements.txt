@@ -1,6 +1,0 @@
-#grpcio
-Flask==0.12.2
-google-cloud-pubsub==0.33.0
-gunicorn==19.7.1
-grpc-google-cloud-pubsub-v1
-protobuf
