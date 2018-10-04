@@ -10,7 +10,7 @@ class Test0(BaseTest):
         self.subscriber.subscribe(self.subscription_path, callback=self.callback)
         for i in range(0, self.testLen):
             if self.endFlag:
-                return
+                break
             time.sleep(1)
 
         self.assertEqual(b'UP', self.message)
