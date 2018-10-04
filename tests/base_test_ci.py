@@ -7,8 +7,8 @@ import unittest
 class BaseTest(unittest.TestCase):
     def setUp(self):
         self.endFlag = False
-        self.testLen = 10
-        self.message = ''
+        self.testLen = 20
+        self.message = b'NULL'
         project = config.CONFIG['project']
         subscription_name = config.CONFIG['subscription_name']
         self.subscriber = pubsub_v1.SubscriberClient()

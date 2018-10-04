@@ -5,15 +5,17 @@ import time
 from google.cloud import pubsub_v1
 import unittest
 
-class Test0(BaseTest):
-    def test_verifyUp(self):
+class Test1(BaseTest):
+    def test_sendId(self):
         self.subscriber.subscribe(self.subscription_path, callback=self.callback)
         for i in range(0, self.testLen):
             if self.endFlag:
+                print(self.message)
                 break
             time.sleep(1)
 
-        self.assertEqual(b'UP', self.message)
+        self.assertNotEqual(b'NULL', self.message)
+        self.assertLess(5, len(self.message))
 
 if __name__ == '__main__':
     unittest.main()
