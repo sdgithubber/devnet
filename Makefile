@@ -38,7 +38,7 @@ run:
 	@make clean_containers
 	@if [ ! "$(sudo docker network ls | grep devnet)" ]; then sudo docker network create devnet || true; fi
 	@docker run --network=devnet --name node -p 7513:7513 spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh >> $(shell pwd)/logs/node.log 2>&1 &
-	@docker run --network=devnet --name cleaner -e PUBSUB_VERIFICATION_TOKEN='1234' -e PUBSUB_TOPIC='topic' -e GOOGLE_CLOUD_PROJECT='spacemesh-198810' -v $(shell pwd)/tests:/opt/devnet spacemesh/devnet_agent:latest python3 /opt/devnet/base_cleaner.py >> $(shell pwd)/logs/cleaner.log 2>&1 & && sleep 10
+	@docker run --network=devnet --name cleaner -e PUBSUB_VERIFICATION_TOKEN='1234' -e PUBSUB_TOPIC='topic' -e GOOGLE_CLOUD_PROJECT='spacemesh-198810' -v $(shell pwd)/tests:/opt/devnet spacemesh/devnet_agent:latest python3 /opt/devnet/base_cleaner.py >> $(shell pwd)/logs/cleaner.log 2>&1 &&\
 	@docker run --network=devnet --name agent -p 8080:8080 -e PUBSUB_VERIFICATION_TOKEN='1234' -e PUBSUB_TOPIC='topic' -e GOOGLE_CLOUD_PROJECT='spacemesh-198810' -v $(shell pwd)/tests:/opt/devnet -v $(shell pwd)/logs:/opt/logs spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py >> $(shell pwd)/logs/test.log 2>&1 &
 	@docker run --network=devnet --name test_server -e PUBSUB_VERIFICATION_TOKEN='1234' -e PUBSUB_TOPIC='topic' -e GOOGLE_CLOUD_PROJECT='spacemesh-198810' -v $(shell pwd)/tests:/opt/devnet spacemesh/devnet_agent:latest python3 /opt/devnet/tests.py >> $(shell pwd)/logs/test.log 2>&1 &
 
