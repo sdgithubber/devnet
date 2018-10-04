@@ -29,7 +29,7 @@ class BaseDevnetAgent:
 
     def act_on_request():
         self.subscriber_downstream.subscribe(self.subscription_path_downstream, callback=self.callback)
-        while !self.endFlag:
+        while not self.endFlag:
             time.sleep(1)
 
     def send(self, data):
