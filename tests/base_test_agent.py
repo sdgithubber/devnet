@@ -3,6 +3,7 @@ from google.cloud import pubsub_v1
 import time
 import re
 import datetime
+from subprocess import call
 
 class BaseDevnetAgent:
     def __init__(self):
@@ -22,11 +23,14 @@ class BaseDevnetAgent:
         message.ack()
         print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + " GOT_DOWN_MSG " + "".join(map(chr, self.message))) 
         if b'END' == self.message:
+            call(["docker stop node"])
             self.endFlag = True
-        if b'SEND_UP' == self.message:
+        elif b'SEND_UP' == self.message:
             self.send('UP')
-        if b'GET_NODE_ID' == self.message:
+        elif b'GET_NODE_ID' == self.message:
             self.send(self.get_node_id())
+        elif b'SHUTDOWN_NODE' == self.message:
+            call(["docker stop node"])
 
     def act_on_request(self):
         self.subscriber_downstream.subscribe(self.subscription_path_downstream, callback=self.callback)
