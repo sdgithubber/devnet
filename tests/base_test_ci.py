@@ -10,9 +10,9 @@ class BaseTest(unittest.TestCase):
         self.testLen = 20
         self.message = b'NULL'
         project = config.CONFIG['project']
-        subscription_name = config.CONFIG['subscription_name']
-        self.subscriber = pubsub_v1.SubscriberClient()
-        self.subscription_path = self.subscriber.subscription_path(project, subscription_name)
+        subscription_name_upstream = config.CONFIG['subscription_name_upstream']
+        self.subscriber_upstream = pubsub_v1.SubscriberClient()
+        self.subscription_path = self.subscriber_upstream.subscription_path(project, subscription_name_upstream)
 
     def callback(self, message):
         self.message = message.data

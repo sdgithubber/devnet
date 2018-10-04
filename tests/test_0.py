@@ -7,7 +7,7 @@ import unittest
 
 class Test0(BaseTest):
     def test_verifyUp(self):
-        self.subscriber.subscribe(self.subscription_path, callback=self.callback)
+        self.subscriber_upstream.subscribe(self.subscription_path_upstream, callback=self.callback)
         for i in range(0, self.testLen):
             if self.endFlag:
                 break

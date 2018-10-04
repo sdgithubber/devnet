@@ -6,13 +6,13 @@ import re
 class BaseDevnetAgent:
     def __init__(self):
         project = config.CONFIG['project']
-        topic_name = config.CONFIG['topic_name']
-        self.publisher = pubsub_v1.PublisherClient()
-        self.topic_path = self.publisher.topic_path(project, topic_name)
+        topic_name_upstream = config.CONFIG['topic_name_upstream']
+        self.publisher_upstream = pubsub_v1.PublisherClient()
+        self.topic_path_upstream = self.publisher_upstream.topic_path(project, topic_name_upstream)
 
     def send(self, data):
         data = data.encode('utf-8')
-        self.publisher.publish(self.topic_path, data=data)
+        self.publisher_upstream.publish(self.topic_path_upstream, data=data)
 
     def get_node_id(self):
         time.sleep(15)
