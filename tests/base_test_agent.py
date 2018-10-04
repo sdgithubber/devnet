@@ -27,7 +27,7 @@ class BaseDevnetAgent:
         if b'GET_NODE_ID' == self.message:
             self.send(self.get_node_id())
 
-    def act_on_request():
+    def act_on_request(self):
         self.subscriber_downstream.subscribe(self.subscription_path_downstream, callback=self.callback)
         while not self.endFlag:
             time.sleep(1)
