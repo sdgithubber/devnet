@@ -27,5 +27,5 @@ class BaseDevnetCleaner:
 
 if __name__ == '__main__':
     t = BaseDevnetCleaner()
-    t.cleanup(subscriber_downstream, subscription_path_downstream)
-    t.cleanup(subscriber_upstream, subscription_path_upstream)
+    t.cleanup(t.subscriber_downstream, t.subscription_path_downstream)
+    t.cleanup(t.subscriber_upstream, t.subscription_path_upstream)
