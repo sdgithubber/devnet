@@ -20,7 +20,7 @@ class BaseDevnetCleaner:
         message.ack()
 
     def cleanup(self, subscriber, subscription_path):
-        self.subscriber.subscribe(self.subscription_path, callback=self.callback)
+        subscriber.subscribe(subscription_path, callback=self.callback)
         while not self.endFlag:
             self.endFlag = True
             time.sleep(2)
