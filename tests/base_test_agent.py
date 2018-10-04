@@ -2,6 +2,7 @@ import config
 from google.cloud import pubsub_v1
 import time
 import re
+import datetime
 
 class BaseDevnetAgent:
     def __init__(self):
@@ -19,7 +20,7 @@ class BaseDevnetAgent:
     def callback(self, message):
         self.message = message.data
         message.ack()
-        print(self.message) 
+        print(datetime.date.today().strftime('%Y-%m-%d %H:%M:%S') + " GOT_DOWN_MSG " + self.message) 
         if b'END' == self.message:
             self.endFlag = True
         if b'SEND_UP' == self.message:
