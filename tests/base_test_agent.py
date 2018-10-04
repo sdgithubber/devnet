@@ -20,7 +20,7 @@ class BaseDevnetAgent:
     def callback(self, message):
         self.message = message.data
         message.ack()
-        print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + " GOT_DOWN_MSG " + self.message) 
+        print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + " GOT_DOWN_MSG " + self.message.encode('utf-8')) 
         if b'END' == self.message:
             self.endFlag = True
         if b'SEND_UP' == self.message:
