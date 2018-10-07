@@ -29,7 +29,7 @@ class BaseDevnetAgent:
         elif b'GET_NODE_ID' == self.message:
             self.send(self.get_node_id())
         elif b'SHUTDOWN_NODE' == self.message:
-            call(["docker stop node"])
+            pass
 
     def act_on_request(self):
         self.subscriber_downstream.subscribe(self.subscription_path_downstream, callback=self.callback)
