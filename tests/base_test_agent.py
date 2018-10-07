@@ -23,7 +23,6 @@ class BaseDevnetAgent:
         message.ack()
         print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + " GOT_DOWN_MSG " + "".join(map(chr, self.message))) 
         if b'END' == self.message:
-            call(["docker stop node"])
             self.endFlag = True
         elif b'SEND_UP' == self.message:
             self.send('UP')
