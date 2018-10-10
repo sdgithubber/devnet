@@ -49,6 +49,7 @@ build_agent:
 	@docker push gcr.io/spacemesh-198810/devnet_agent
 
 build_agent_packed:
+	@docker pull gcr.io/spacemesh-198810/devnet_agent_packed:latest
 	@docker build -f $(shell pwd)/agent/Dockerfile.code -t spacemesh/devnet_agent_packed:latest .
 	@docker tag spacemesh/devnet_agent_packed gcr.io/spacemesh-198810/devnet_agent_packed
 	@docker push gcr.io/spacemesh-198810/devnet_agent_packed
