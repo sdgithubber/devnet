@@ -39,7 +39,7 @@ run:
 	@docker run --rm --network=devnet --name test_server -e PUBSUB_VERIFICATION_TOKEN='1234' -e PUBSUB_TOPIC='topic' -e GOOGLE_CLOUD_PROJECT='spacemesh-198810' -v $(shell pwd)/tests:/opt/devnet spacemesh/devnet_agent:latest python3 /opt/devnet/tests.py >> $(shell pwd)/logs/test.log 2>&1 &
 
 build:
-	@[[ ":$PATH:" != *"/usr/lib/google-cloud-sdk/bin/:"* ]] && PATH="/usr/lib/google-cloud-sdk/bin/:${PATH}"
+	[[ ":$PATH:" != *"/usr/lib/google-cloud-sdk/bin/:"* ]] && PATH="/usr/lib/google-cloud-sdk/bin/:${PATH}"
 	@gcloud auth configure-docker
 	@make build_agent
 	@make build_agent_packed
