@@ -4,6 +4,7 @@ import time
 import re
 import datetime
 from subprocess import call
+import spur
 
 class BaseDevnetAgent:
     def __init__(self):
@@ -18,18 +19,35 @@ class BaseDevnetAgent:
         self.subscriber_downstream = pubsub_v1.SubscriberClient()
         self.subscription_path_downstream = self.subscriber_downstream.subscription_path(project, subscription_name_downstream)
 
+    def stop_node(self):
+        shell = spur.SshShell(
+            hostname=config.CONFIG['host'], 
+            username=config.CONFIG['host_user'], 
+            password=config.CONFIG['host_password'], 
+            missing_host_key=spur.ssh.MissingHostKey.accept
+        )
+        with shell:
+            try:
+                result = shell.run(["docker", "stop", "node"])
+                print('Node stopped: ' + "".join(map(chr, result.output)))
+                result = shell.run(["docker", "rm", "node"])
+                print('Node removed: ' + "".join(map(chr, result.output)))
+            except:
+                print('Node stop/remove failed')
+
     def callback(self, message):
         self.message = message.data
         message.ack()
         print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + " GOT_DOWN_MSG " + "".join(map(chr, self.message))) 
         if b'END' == self.message:
+            self.stop_node()
             self.endFlag = True
         elif b'SEND_UP' == self.message:
             self.send('UP')
         elif b'GET_NODE_ID' == self.message:
             self.send(self.get_node_id())
         elif b'SHUTDOWN_NODE' == self.message:
-            pass
+            self.stop_node()
 
     def act_on_request(self):
         self.subscriber_downstream.subscribe(self.subscription_path_downstream, callback=self.callback)
