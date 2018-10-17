@@ -28,9 +28,9 @@ class BaseDevnetAgent:
         )
         with shell:
             result = shell.run(["docker", "stop", "node"])
-            print('stopped: ' + result.output)
+            print('stopped: ' + "".join(map(chr, result.output)))
             result = shell.run(["docker", "rm", "node"])
-            print('removed: ' + result.output)
+            print('removed: ' + "".join(map(chr, result.output)))
 
     def callback(self, message):
         self.message = message.data
