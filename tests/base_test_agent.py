@@ -27,10 +27,16 @@ class BaseDevnetAgent:
             missing_host_key=spur.ssh.MissingHostKey.accept
         )
         with shell:
-            result = shell.run(["docker", "stop", "node"])
-            print('stopped: ' + "".join(map(chr, result.output)))
-            result = shell.run(["docker", "rm", "node"])
-            print('removed: ' + "".join(map(chr, result.output)))
+            try:
+                result = shell.run(["docker", "stop", "node"])
+                print('stopped: ' + "".join(map(chr, result.output)))
+            except:
+                pass
+            try:
+                result = shell.run(["docker", "rm", "node"])
+                print('removed: ' + "".join(map(chr, result.output)))
+            except:
+                pass
 
     def callback(self, message):
         self.message = message.data
