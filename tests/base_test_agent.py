@@ -20,7 +20,12 @@ class BaseDevnetAgent:
         self.subscription_path_downstream = self.subscriber_downstream.subscription_path(project, subscription_name_downstream)
 
     def stop_node(self):
-        shell = spur.SshShell(hostname=config.CONFIG['host'], username=config.CONFIG['host_user'], password=config.CONFIG['host_password'])
+        shell = spur.SshShell(
+            hostname=config.CONFIG['host'], 
+            username=config.CONFIG['host_user'], 
+            password=config.CONFIG['host_password'], 
+            missing_host_key=spur.ssh.MissingHostKey.accept
+        )
         with shell:
             result = shell.run(["docker", "stop", "node"])
             print('stopped: ' + result.output)
