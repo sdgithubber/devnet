@@ -58,7 +58,9 @@ class BaseTest(unittest.TestCase):
                 cmd = 'docker run --rm --network=devnet --name agent -p 8080:8080 -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs:/opt/logs spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py >> /root/spacemesh/devnet/logs/test.log 2>&1 &'
                 print('Agent started: ' + "".join(map(chr, result.output)))
             except Exception as e:
-                print('Node/Agent started failed: ' + e.__doc__ + ": " + e.message)
+                print('Node/Agent started failed)
+                print(e.__doc__ )
+                print(e.message)
 
 if __name__ == '__main__':
     unittest.main()
