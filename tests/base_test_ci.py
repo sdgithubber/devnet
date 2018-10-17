@@ -43,7 +43,7 @@ class BaseTest(unittest.TestCase):
         self.send(data)
         self.wait_for_response()
 
-    def start_node_agent_pair():
+    def start_node_agent_pair(self):
         shell = spur.SshShell(
             hostname=config.CONFIG['host'], 
             username=config.CONFIG['host_user'], 
