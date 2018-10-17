@@ -7,6 +7,7 @@ import unittest
 
 class Test1(BaseTest):
     def test_sendId(self):
+        self.start_node_agent_pair()
         self.send_and_wait('GET_NODE_ID')
 
         self.assertNotEqual(b'NULL', self.message)

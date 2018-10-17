@@ -3,6 +3,7 @@ import os
 import time
 from google.cloud import pubsub_v1
 import unittest
+import spur
 
 class BaseTest(unittest.TestCase):
     def setUp(self):
@@ -41,6 +42,23 @@ class BaseTest(unittest.TestCase):
     def send_and_wait(self, data):
         self.send(data)
         self.wait_for_response()
+
+    def start_node_agent_pair():
+        shell = spur.SshShell(
+            hostname=config.CONFIG['host'], 
+            username=config.CONFIG['host_user'], 
+            password=config.CONFIG['host_password'], 
+            missing_host_key=spur.ssh.MissingHostKey.accept
+        )
+        with shell:
+            try:
+                cmd = 'docker run --rm --network=devnet --name node -p 7513:7513 spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh >> /root/spacemesh/devnet/logs/node.log 2>&1 &'
+                result = shell.run(cmd.split(' '))
+                print('Node started: ' + "".join(map(chr, result.output)))
+                cmd = 'docker run --rm --network=devnet --name agent -p 8080:8080 -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs:/opt/logs spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py >> /root/spacemesh/devnet/logs/test.log 2>&1 &'
+                print('Agent started: ' + "".join(map(chr, result.output)))
+            except:
+                print('Node/Agent started failed')
 
 if __name__ == '__main__':
     unittest.main()
