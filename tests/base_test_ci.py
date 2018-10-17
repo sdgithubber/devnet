@@ -50,9 +50,9 @@ class BaseTest(unittest.TestCase):
             password=config.CONFIG['host_password'], 
             missing_host_key=spur.ssh.MissingHostKey.accept
         )
-		print(config.CONFIG['host'])
-		print(config.CONFIG['host_user'])
-		print(config.CONFIG['host_password'])
+        print(config.CONFIG['host'])
+        print(config.CONFIG['host_user'])
+        print(config.CONFIG['host_password'])
         with shell:
             try:
                 #cmd = 'docker run --rm --network=devnet --name node -p 7513:7513 spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh >> /root/spacemesh/devnet/logs/node.log 2>&1 &'
