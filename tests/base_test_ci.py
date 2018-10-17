@@ -50,16 +50,14 @@ class BaseTest(unittest.TestCase):
             password=config.CONFIG['host_password'], 
             missing_host_key=spur.ssh.MissingHostKey.accept
         )
-        print(config.CONFIG['host'])
-        print(config.CONFIG['host_user'])
-        print(config.CONFIG['host_password'])
         with shell:
             try:
-                #cmd = 'docker run --rm --network=devnet --name node -p 7513:7513 spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh >> /root/spacemesh/devnet/logs/node.log 2>&1 &'
-                result = shell.run(["docker", "run", "--rm", "--network=devnet", "--name", "node", "-p", "7513:7513", "spacemesh/node:latest", "/go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh", ">>", "/root/spacemesh/devnet/logs/node.log", "2>&1", "&"])
-                #result = shell.run(cmd.split(' '))
+                cmd = 'docker run --rm --network=devnet --name node -p 7513:7513 spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh >> /root/spacemesh/devnet/logs/node.log 2>&1 &'
+                print(cmd)
+                result = shell.run(cmd.split(' '))
                 print('Node started: ' + "".join(map(chr, result.output)))
                 cmd = 'docker run --rm --network=devnet --name agent -p 8080:8080 -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs:/opt/logs spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py >> /root/spacemesh/devnet/logs/test.log 2>&1 &'
+                print(cmd)
                 print('Agent started: ' + "".join(map(chr, result.output)))
             except Exception as e:
                 print('Node/Agent started failed')
