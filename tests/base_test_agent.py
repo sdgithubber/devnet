@@ -29,14 +29,11 @@ class BaseDevnetAgent:
         with shell:
             try:
                 result = shell.run(["docker", "stop", "node"])
-                print('stopped: ' + "".join(map(chr, result.output)))
-            except:
-                pass
-            try:
+                print('Node stopped: ' + "".join(map(chr, result.output)))
                 result = shell.run(["docker", "rm", "node"])
-                print('removed: ' + "".join(map(chr, result.output)))
+                print('Node removed: ' + "".join(map(chr, result.output)))
             except:
-                pass
+                print('Node stop/remove failed')
 
     def callback(self, message):
         self.message = message.data
