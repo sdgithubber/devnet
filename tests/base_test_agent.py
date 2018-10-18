@@ -32,8 +32,9 @@ class BaseDevnetAgent:
                 print('Node stopped: ' + "".join(map(chr, result.output)))
                 result = shell.run(["docker", "rm", "node"])
                 print('Node removed: ' + "".join(map(chr, result.output)))
-            except:
+            except Exception as e:
                 print('Node stop/remove failed')
+                print(e.__doc__ )
 
     def callback(self, message):
         self.message = message.data
@@ -63,8 +64,10 @@ class BaseDevnetAgent:
         node_id = 'NULL'
         try:
             node_id = next(os.walk('/opt/logs'))[1][0]
-        except:
+        except Exception as e:
             print('Error finding log folder')
+            print(e.__doc__ )
+
         print('NodeId:' + node_id)
         return node_id
 
