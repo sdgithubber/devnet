@@ -7,6 +7,7 @@ import unittest
 
 class Test0(BaseTest):
     def test_verifyUp(self):
+        self.start_node_agent_pair()
         self.send_and_wait('SEND_UP')
         
         self.assertEqual(b'UP', self.message)

@@ -1,10 +1,10 @@
 import config
 from google.cloud import pubsub_v1
 import time
-import re
 import datetime
 from subprocess import call
 import spur
+import os
 
 class BaseDevnetAgent:
     def __init__(self):
@@ -32,8 +32,9 @@ class BaseDevnetAgent:
                 print('Node stopped: ' + "".join(map(chr, result.output)))
                 result = shell.run(["docker", "rm", "node"])
                 print('Node removed: ' + "".join(map(chr, result.output)))
-            except:
+            except Exception as e:
                 print('Node stop/remove failed')
+                print(e.__doc__ )
 
     def callback(self, message):
         self.message = message.data
@@ -60,15 +61,15 @@ class BaseDevnetAgent:
 
     def get_node_id(self):
         time.sleep(15)
-        pattern = re.compile(u'.*NodeID (\w+)')
         node_id = 'NULL'
-        for line in open('/opt/logs/node.log', "r", encoding="utf-8"):
-            results = pattern.match(line)
-            if results != None:
-                node_id = results.group(1)
-                break;
-        return node_id
+        try:
+            node_id = next(os.walk('/opt/logs'))[1][0]
+        except Exception as e:
+            print('Error finding log folder')
+            print(e.__doc__ )
 
+        print('NodeId:' + node_id)
+        return node_id
 
 if __name__ == '__main__':
     t = BaseDevnetAgent()
