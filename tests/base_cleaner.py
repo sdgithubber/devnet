@@ -28,7 +28,7 @@ if __name__ == '__main__':
     t = BaseDevnetCleaner()
 
     subscription_name_downstream = config.CONFIG['subscription_name_downstream']
-    for i in range [0:10]:
+    for i in range(0, 10):
         t.subscription_path_downstream = t.subscriber_downstream.subscription_path(project, subscription_name_downstream + '_' + str(i))
         t.cleanup(t.subscriber_downstream, t.subscription_path_downstream)
     t.cleanup(t.subscriber_upstream, t.subscription_path_upstream)
