@@ -56,7 +56,7 @@ class BaseTest(unittest.TestCase):
                 print(cmd)
                 result = shell.spawn(cmd.split(' '))
                 print('Node started')
-                cmd = 'docker run --rm --network=devnet --name agent -p 8080:8080 -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs:/opt/logs spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py'
+                cmd = 'docker run --rm --network=devnet --name agent -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs:/opt/logs spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py'
                 print(cmd)
                 result = shell.spawn(cmd.split(' '))
                 print('Agent started')
