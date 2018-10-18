@@ -20,6 +20,8 @@ class BaseTest(unittest.TestCase):
         self.publisher_downstream = pubsub_v1.PublisherClient()
         self.topic_path_downstream = self.publisher_downstream.topic_path(project, topic_name_downstream)
 
+        self.agents = 0
+
     def tearDown(self):
         self.send('END')
 
@@ -56,13 +58,14 @@ class BaseTest(unittest.TestCase):
                 print(cmd)
                 result = shell.spawn(cmd.split(' '))
                 print('Node started')
-                cmd = 'docker run --network=devnet --name agent -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs:/opt/logs -e SUBSCRIPTION_NAME_DOWNSTREAM="devnet_tests_agent" spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py'
+                cmd = 'docker run --network=devnet --name agent -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs:/opt/logs -e SUBSCRIPTION_NAME_DOWNSTREAM="devnet_tests_agent' + str(self.agents) + '" spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py'
                 print(cmd)
                 result = shell.spawn(cmd.split(' '))
                 print('Agent started')
             except Exception as e:
                 print('Node/Agent started failed')
                 print(e.__doc__ )
+        self.agents += 1
 
 if __name__ == '__main__':
     unittest.main()
