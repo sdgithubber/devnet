@@ -52,11 +52,11 @@ class BaseTest(unittest.TestCase):
         )
         with shell:
             try:
-                cmd = 'docker run --rm --network=devnet --name node -p 7513:7513 spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh >> /root/spacemesh/devnet/logs/node.log 2>&1'
+                cmd = 'docker run --rm --network=devnet --name node -p 7513:7513 -v /root/spacemesh/devnet/logs:/root/.spacemesh/nodes/ spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh'
                 print(cmd)
                 result = shell.spawn(cmd.split(' '))
                 print('Node started')
-                cmd = 'docker run --rm --network=devnet --name agent -p 8080:8080 -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs:/opt/logs spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py >> /root/spacemesh/devnet/logs/test.log 2>&1'
+                cmd = 'docker run --rm --network=devnet --name agent -p 8080:8080 -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs:/opt/logs spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py'
                 print(cmd)
                 result = shell.spawn(cmd.split(' '))
                 print('Agent started')

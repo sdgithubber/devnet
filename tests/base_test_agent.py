@@ -1,10 +1,10 @@
 import config
 from google.cloud import pubsub_v1
 import time
-import re
 import datetime
 from subprocess import call
 import spur
+import os
 
 class BaseDevnetAgent:
     def __init__(self):
@@ -60,15 +60,12 @@ class BaseDevnetAgent:
 
     def get_node_id(self):
         time.sleep(15)
-        pattern = re.compile(u'.*NodeID (\w+)')
         node_id = 'NULL'
-        for line in open('/opt/logs/node.log', "r", encoding="utf-8"):
-            results = pattern.match(line)
-            if results != None:
-                node_id = results.group(1)
-                break;
+        try
+            node_id = next(os.walk('/opt/logs'))[1][0]
+        except
+            pass
         return node_id
-
 
 if __name__ == '__main__':
     t = BaseDevnetAgent()
