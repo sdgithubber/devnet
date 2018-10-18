@@ -62,9 +62,9 @@ class BaseDevnetAgent:
         time.sleep(15)
         node_id = 'NULL'
         print(1)
-        try
+        try:
             node_id = next(os.walk('/opt/logs'))[1][0]
-        except
+        except:
             print('Error finding log folder')
         return node_id
 
