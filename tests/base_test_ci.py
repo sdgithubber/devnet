@@ -45,7 +45,7 @@ class BaseTest(unittest.TestCase):
         self.send(data)
         self.wait_for_response()
 
-    def start_docker(self, cmd):
+    def start_docker(self, shell, cmd):
         try:
             print(cmd)
             result = shell.spawn(cmd.split(' '))
