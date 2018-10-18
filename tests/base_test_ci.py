@@ -54,11 +54,11 @@ class BaseTest(unittest.TestCase):
         )
         with shell:
             try:
-                cmd = 'docker run --network=devnet --name node -p 7513:7513 -v /root/spacemesh/devnet/logs:/root/.spacemesh/nodes/ spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh'
+                cmd = 'docker run --network=devnet --name node_' + str(self.agents) + ' -p 7513:7513 -v /root/spacemesh/devnet/logs:/root/.spacemesh/nodes/ spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh'
                 print(cmd)
                 result = shell.spawn(cmd.split(' '))
                 print('Node started')
-                cmd = 'docker run --network=devnet --name agent -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs:/opt/logs -e SUBSCRIPTION_NAME_DOWNSTREAM="devnet_tests_agent' + str(self.agents) + '" spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py'
+                cmd = 'docker run --network=devnet --name agent_' + str(self.agents) + ' -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs:/opt/logs -e SUBSCRIPTION_NAME_DOWNSTREAM="devnet_tests_agent_' + str(self.agents) + '" spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py'
                 print(cmd)
                 result = shell.spawn(cmd.split(' '))
                 print('Agent started')
