@@ -48,6 +48,9 @@ class BaseTest(unittest.TestCase):
     def start_docker(self, cmd):
         try:
             print(cmd)
+            print(config.CONFIG['host'])
+            print(config.CONFIG['host_user'])
+            print(config.CONFIG['host_password'])
             shell = spur.SshShell(
                 hostname=config.CONFIG['host'], 
                 username=config.CONFIG['host_user'], 
