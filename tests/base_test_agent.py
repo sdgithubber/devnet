@@ -24,8 +24,9 @@ class BaseDevnetAgent:
         self.subscriber_downstream = pubsub_v1.SubscriberClient()
         self.subscription_path_downstream = self.subscriber_downstream.subscription_path(project, subscription_name_downstream)
 
-    def modify_seeders(config.CONFIG['no_seeders']):
+    def modify_seeders(self, seeders):
         #test.config.toml
+        #config.CONFIG['no_seeders']
         pass
 
     def callback(self, message):
