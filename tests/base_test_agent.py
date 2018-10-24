@@ -25,9 +25,13 @@ class BaseDevnetAgent:
         self.subscription_path_downstream = self.subscriber_downstream.subscription_path(project, subscription_name_downstream)
 
     def modify_seeders(self, seeders):
-        #test.config.toml
-        if (seeders == config.CONFIG['no_seeders']):
-            return
+        file_name = "/opt/devnet/test.config.toml"
+
+        with open(file_name) as f:
+            new_config = f.read().replace('BOOT_NODES', seeders)
+
+        with open(file_name, "w") as f:
+            f.write(new_config)
 
     def callback(self, message):
         self.message = message.data
