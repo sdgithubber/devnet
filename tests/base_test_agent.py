@@ -15,6 +15,7 @@ class BaseDevnetAgent:
         self.publisher_upstream = pubsub_v1.PublisherClient()
         self.topic_path_upstream = self.publisher_upstream.topic_path(project, topic_name_upstream)
 
+        self.node = os.environ['NODE']
         subscription_name_downstream = os.environ['SUBSCRIPTION_NAME_DOWNSTREAM']
         self.subscriber_downstream = pubsub_v1.SubscriberClient()
         self.subscription_path_downstream = self.subscriber_downstream.subscription_path(project, subscription_name_downstream)
@@ -28,9 +29,9 @@ class BaseDevnetAgent:
         )
         with shell:
             try:
-                result = shell.run(["docker", "stop", "node"])
+                result = shell.run(["docker", "stop", self.node])
                 print('Node stopped: ' + "".join(map(chr, result.output)))
-                result = shell.run(["docker", "rm", "node"])
+                result = shell.run(["docker", "rm", self.node])
                 print('Node removed: ' + "".join(map(chr, result.output)))
             except Exception as e:
                 print('Node stop/remove failed')
