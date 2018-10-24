@@ -45,25 +45,25 @@ class BaseTest(unittest.TestCase):
         self.send(data)
         self.wait_for_response()
 
-    def start_docker(self, shell, cmd):
+    def start_docker(self, cmd):
         try:
             print(cmd)
-            result = shell.spawn(cmd.split(' '))
-            print('Docker started')
+            shell = spur.SshShell(
+                hostname=config.CONFIG['host'], 
+                username=config.CONFIG['host_user'], 
+                password=config.CONFIG['host_password'], 
+                missing_host_key=spur.ssh.MissingHostKey.accept
+            )
+            with shell:
+                result = shell.spawn(cmd.split(' '))
+                print('Docker started')
         except Exception as e:
             print('Docker start failed')
             print(e.__doc__ )
         
     def start_node_agent_pair(self):
-        shell = spur.SshShell(
-            hostname=config.CONFIG['host'], 
-            username=config.CONFIG['host_user'], 
-            password=config.CONFIG['host_password'], 
-            missing_host_key=spur.ssh.MissingHostKey.accept
-        )
-        with shell:
-            self.start_docker(shell, 'docker run --network=devnet --name node_' + str(self.agents) + ' -p ' + str(7513 + self.agents) + ':7513 -v /root/spacemesh/devnet/logs:/root/.spacemesh/nodes/ spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh')
-            self.start_docker(shell, 'docker run --network=devnet --name agent_' + str(self.agents) + ' -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs:/opt/logs -e SUBSCRIPTION_NAME_DOWNSTREAM=\'devnet_tests_agent_' + str(self.agents) + '\' spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py')
+        self.start_docker('docker run --network=devnet --name node_' + str(self.agents) + ' -p ' + str(7513 + self.agents) + ':7513 -v /root/spacemesh/devnet/logs:/root/.spacemesh/nodes/ spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh')
+        self.start_docker('docker run --network=devnet --name agent_' + str(self.agents) + ' -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs:/opt/logs -e SUBSCRIPTION_NAME_DOWNSTREAM=\'devnet_tests_agent_' + str(self.agents) + '\' spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py')
         self.agents += 1
 
 if __name__ == '__main__':
