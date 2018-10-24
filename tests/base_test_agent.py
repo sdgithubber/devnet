@@ -28,7 +28,7 @@ class BaseDevnetAgent:
         file_name = "/opt/devnet/test.config.toml"
 
         with open(file_name) as f:
-            new_config = f.read().replace('BOOT_NODES', seeders)
+            new_config = f.read().replace('BOOT_NODES', 'bootnodes = ' + seeders)
 
         with open(file_name, "w") as f:
             f.write(new_config)
