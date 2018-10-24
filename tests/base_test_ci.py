@@ -46,7 +46,7 @@ class BaseTest(unittest.TestCase):
         self.send(data)
         self.wait_for_response()
 
-    def start_node_agent_pair(self, seeders = "NULL"):
+    def start_node_agent_pair(self, seeders = config.CONFIG['no_seeders']):
         docker = Docker()
         docker.stop('agent_' + str(self.agents))
         docker.start('docker run --network=devnet --name agent_' + str(self.agents) + ' -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs:/opt/logs -e SUBSCRIPTION_NAME_DOWNSTREAM=devnet_tests_agent_' + str(self.agents) + ' -e NODE=' + str(self.agents) + ' -e SEEDERS=' + seeders + ' spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py')

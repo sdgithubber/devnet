@@ -6,5 +6,6 @@ CONFIG = {
     'subscription_name_downstream': 'devnet_tests_agent',
     'host': '127.0.0.1',
     'host_user': 'deploy',
-    'host_password': 'deploy_password'
+    'host_password': 'deploy_password',
+    'no_seeders': 'NULL'
 }
