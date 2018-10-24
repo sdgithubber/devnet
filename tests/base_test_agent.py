@@ -17,6 +17,9 @@ class BaseDevnetAgent:
         self.topic_path_upstream = self.publisher_upstream.topic_path(project, topic_name_upstream)
 
         self.node = os.environ['NODE']
+        docker = Docker()
+        docker.stop('node_' + str(self.agents))
+        docker.start('docker run --network=devnet --name node_' + self.node + ' -p ' + str(7513 + self.node) + ':7513 -v /root/spacemesh/devnet/logs:/root/.spacemesh/nodes/ spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh')
         subscription_name_downstream = os.environ['SUBSCRIPTION_NAME_DOWNSTREAM']
         self.subscriber_downstream = pubsub_v1.SubscriberClient()
         self.subscription_path_downstream = self.subscriber_downstream.subscription_path(project, subscription_name_downstream)
@@ -30,9 +33,9 @@ class BaseDevnetAgent:
         )
         with shell:
             try:
-                result = shell.run(["docker", "stop", self.node])
+                result = shell.run(["docker", "stop", "node_" + self.node])
                 print('Node stopped: ' + "".join(map(chr, result.output)))
-                result = shell.run(["docker", "rm", self.node])
+                result = shell.run(["docker", "rm", "node_" + self.node])
                 print('Node removed: ' + "".join(map(chr, result.output)))
             except Exception as e:
                 print('Node stop/remove failed')
