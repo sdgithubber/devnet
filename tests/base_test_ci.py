@@ -45,49 +45,11 @@ class BaseTest(unittest.TestCase):
         self.send(data)
         self.wait_for_response()
 
-    def start_docker(self, cmd):
-        try:
-            print(cmd)
-            print(config.CONFIG['host'])
-            print(config.CONFIG['host_user'])
-            print(config.CONFIG['host_password'])
-            shell = spur.SshShell(
-                hostname=config.CONFIG['host'], 
-                username=config.CONFIG['host_user'], 
-                password=config.CONFIG['host_password'], 
-                missing_host_key=spur.ssh.MissingHostKey.accept
-            )
-            with shell:
-                result = shell.spawn(cmd.split(' '))
-                print('Docker started')
-        except Exception as e:
-            print('Docker start failed')
-            print(e.__doc__ )
-
-    def run_cmd_interactive(self, cmd):
-        try:
-            shell = spur.SshShell(
-                hostname=config.CONFIG['host'], 
-                username=config.CONFIG['host_user'], 
-                password=config.CONFIG['host_password'], 
-                missing_host_key=spur.ssh.MissingHostKey.accept
-            )
-            with shell:
-                result = shell.run(cmd.split(' '))
-                print('Run interactive: ' + cmd)
-        except Exception as e:
-            print('Run interactive failed: ' + cmd)
-            print(e.__doc__ )
-
-    def stop_docker(self, name):
-        self.run_cmd_interactive("docker stop " + name)
-        self.run_cmd_interactive("docker rm " + name)
-
     def start_node_agent_pair(self):
-        self.stop_docker('node_' + str(self.agents))
-        self.stop_docker('agent_' + str(self.agents))
-        self.start_docker('docker run --network=devnet --name node_' + str(self.agents) + ' -p ' + str(7513 + self.agents) + ':7513 -v /root/spacemesh/devnet/logs:/root/.spacemesh/nodes/ spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh')
-        self.start_docker('docker run --network=devnet --name agent_' + str(self.agents) + ' -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs:/opt/logs -e SUBSCRIPTION_NAME_DOWNSTREAM=devnet_tests_agent_' + str(self.agents) + ' -e NODE=node_' + str(self.agents) + ' spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py')
+        Docker.stop('node_' + str(self.agents))
+        Docker.start('docker run --network=devnet --name node_' + str(self.agents) + ' -p ' + str(7513 + self.agents) + ':7513 -v /root/spacemesh/devnet/logs:/root/.spacemesh/nodes/ spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh')
+        Dockers.stop('agent_' + str(self.agents))
+        Dockers.start('docker run --network=devnet --name agent_' + str(self.agents) + ' -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs:/opt/logs -e SUBSCRIPTION_NAME_DOWNSTREAM=devnet_tests_agent_' + str(self.agents) + ' -e NODE=node_' + str(self.agents) + ' spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py')
         self.agents += 1
 
 if __name__ == '__main__':
