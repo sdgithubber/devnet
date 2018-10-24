@@ -1,11 +1,11 @@
 import config
+from dockers import Docker
 from google.cloud import pubsub_v1
 import time
 import datetime
 from subprocess import call
 import spur
 import os
-import dockers
 
 class BaseDevnetAgent:
     def __init__(self):
