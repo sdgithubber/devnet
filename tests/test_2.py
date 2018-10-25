@@ -12,7 +12,7 @@ class Test2(BaseTest):
             self.start_node_agent_pair()
             self.send_and_wait('GET_NODE_ID')
             self.assertNotEqual(b'NULL', self.message)
-            self.assertLess(5, len(self.message))
+            self.assertLess(15, len(self.message))
             seeds.append(self.message)
 
         self.assertEqual(3, len(seeds))
