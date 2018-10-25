@@ -10,7 +10,7 @@ import spur
 class BaseTest(unittest.TestCase):
     def setUp(self):
         self.endFlag = False
-        self.testLen = 20
+        self.testLen = 60
         self.message = b'NULL'
         project = config.CONFIG['project']
         subscription_name_upstream = config.CONFIG['subscription_name_upstream']
