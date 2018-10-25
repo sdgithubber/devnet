@@ -23,25 +23,25 @@ class BaseTest(unittest.TestCase):
         self.topic_path_downstream = self.publisher_downstream.topic_path(project, topic_name_downstream)
 
         self.agents = 0
+        self.messages = []
 
     def tearDown(self):
         self.send('END')
 
     def callback(self, message):
-        self.message = message.data
+        self.messages.append(message.data.decode("utf-8"))
         message.ack()
-        self.endFlag = True
 
     def send(self, data):
         print(data)
         data = data.encode('utf-8')
         self.publisher_downstream.publish(self.topic_path_downstream, data=data)
 
-    def wait_for_response(self):
+    def wait_for_response(self, num_messages = 1):
         for i in range(0, self.testLen):
-            if self.endFlag:
-                print(self.message)
-                break
+            if len(self.messages) == num_messages:
+                print(self.messages)
+                return
             time.sleep(1)
 
     def send_and_wait(self, data):

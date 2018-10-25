@@ -12,28 +12,28 @@ class Test2(BaseTest):
             print(i)
             self.start_node_agent_pair()
         self.send('GET_NODE_ID')
+        self.wait_for_response(3)
+        
+        self.assertEqual(3, len(self.messages))
         for i in range(0, 3):
-            self.wait_for_response()
-            self.assertNotEqual(b'NULL', self.message)
-            self.assertLess(15, len(self.message))
-            seeds.append(self.message.decode("utf-8"))
-
-        self.assertEqual(3, len(seeds))
+            self.assertNotEqual(b'NULL', self.messages[i])
+            self.assertLess(15, len(self.messages[i]))
+            seeds.append(self.messages[i])
 
         #'["0.0.0.0:7517/j7qWfWaJRVp25ZsnCu9rJ4PmhigZBtesB4YmQHqqPvtR"]' like
-        seeders_str = '["' + '","'.join(seeds) + ']"'
+        seeders_str = '["' + '","'.join(self.messages) + ']"'
         print(seeders_str)
+        self.messages = []
 
-        seeds = []
         for i in range(0, 3):
             self.start_node_agent_pair(seeders_str)
 
         self.send('GET_NODE_ID')
+        self.wait_for_response(6)
+        self.assertEqual(6, len(self.messages))
         for i in range(0, 6):
-            self.wait_for_response()
-            self.assertNotEqual(b'NULL', self.message)
-            self.assertLess(15, len(self.message))
-            seeds.append(self.message)
+            self.assertNotEqual(b'NULL', self.messages[i])
+            self.assertLess(15, len(self.messages[i]))
 
 if __name__ == '__main__':
     unittest.main()
