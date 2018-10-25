@@ -20,7 +20,7 @@ class BaseDevnetAgent:
         self.docker.stop('node_' + self.node)
         print('seeders:' + os.environ['SEEDERS'])
         self.modify_seeders(os.environ['SEEDERS'])
-        self.docker.start('docker run --network=devnet --name node_' + self.node + ' -p ' + str(7513 + int(self.node)) + ':7513 -v /root/spacemesh/devnet/logs:/root/.spacemesh/nodes/ -v /root/spacemesh/devnet/tests/test.config.toml:/go/test.config.toml spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh -config /go/test.config.toml')
+        self.docker.start('docker run --network=devnet --name node_' + self.node + ' -p ' + str(7513 + int(self.node)) + ':7513 -v /root/spacemesh/devnet/logs' + self.node + ':/root/.spacemesh/nodes/ -v /root/spacemesh/devnet/tests/test.config.toml:/go/test.config.toml spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh -config /go/test.config.toml')
         subscription_name_downstream = os.environ['SUBSCRIPTION_NAME_DOWNSTREAM']
         self.subscriber_downstream = pubsub_v1.SubscriberClient()
         self.subscription_path_downstream = self.subscriber_downstream.subscription_path(project, subscription_name_downstream)
