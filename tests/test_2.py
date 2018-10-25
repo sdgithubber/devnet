@@ -17,7 +17,7 @@ class Test2(BaseTest):
 
         self.assertEqual(3, len(seeds))
 
-        seeders_str = '["' + '","'.join(seeds) + ']"'
+        seeders_str = '["' + str(b'","'.join(str(seeds))) + ']"'
         print(seeders_str)
         for i in range(0, 3):
             self.start_node_agent_pair('["0.0.0.0:7517/j7qWfWaJRVp25ZsnCu9rJ4PmhigZBtesB4YmQHqqPvtR"]')
