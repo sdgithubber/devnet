@@ -35,7 +35,7 @@ class BaseTest(unittest.TestCase):
         self.messages.append(message.data.decode("utf-8"))
         message.ack()
 
-    def create_phase(self, test, phase)
+    def create_phase(self, test, phase):
         return self.phase = 'test_' + str(test) + '_phase_' + str(phase) + '_' + str(calendar.timegm(time.gmtime()))
 
     def send(self, data, phase=self.phase):
