@@ -12,7 +12,7 @@ class BaseTest(unittest.TestCase):
     def setUp(self):
         self.create_phase(0, 0)
         self.endFlag = False
-        self.testLen = 60
+        self.testLen = 15
         self.message = b'NULL'
         project = config.CONFIG['project']
         subscription_name_upstream = config.CONFIG['subscription_name_upstream']
