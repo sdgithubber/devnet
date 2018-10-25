@@ -18,6 +18,7 @@ class BaseDevnetAgent:
         self.node = os.environ['NODE']
         self.docker = Docker()
         self.docker.stop('node_' + self.node)
+        print('seeders:' + os.environ['SEEDERS'])
         self.modify_seeders(os.environ['SEEDERS'])
         self.docker.start('docker run --network=devnet --name node_' + self.node + ' -p ' + str(7513 + int(self.node)) + ':7513 -v /root/spacemesh/devnet/logs:/root/.spacemesh/nodes/ -v /root/spacemesh/devnet/tests/test.config.toml:/go/test.config.toml spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh -config /go/test.config.toml')
         subscription_name_downstream = os.environ['SUBSCRIPTION_NAME_DOWNSTREAM']
