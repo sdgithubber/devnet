@@ -13,7 +13,7 @@ class Test2(BaseTest):
             self.send_and_wait('GET_NODE_ID')
             self.assertNotEqual(b'NULL', self.message)
             self.assertLess(15, len(self.message))
-            seeds.append(str(self.message))
+            seeds.append(self.message.decode("utf-8"))
 
         self.assertEqual(3, len(seeds))
 
