@@ -39,8 +39,8 @@ class BaseTest(unittest.TestCase):
         self.phase = 'test_' + str(test) + '_phase_' + str(phase) + '_' + str(calendar.timegm(time.gmtime()))
         return self.phase
 
-    def send(self, data, phase=null):
-        if phase == null:
+    def send(self, data, phase=None):
+        if phase == None:
             phase = self.phase
         print(data)
         data = data.encode('utf-8')
@@ -53,12 +53,12 @@ class BaseTest(unittest.TestCase):
                 return
             time.sleep(1)
 
-    def send_and_wait(self, data, phase=null):
+    def send_and_wait(self, data, phase=None):
         self.send(data, phase)
         self.wait_for_response()
 
-    def start_node_agent_pair(self, phase=null, seeders=config.CONFIG['no_seeders']):
-        if phase == null:
+    def start_node_agent_pair(self, phase=None, seeders=config.CONFIG['no_seeders']):
+        if phase == None:
             phase = self.phase
         docker = Docker()
         docker.stop('agent_' + str(self.agents))
