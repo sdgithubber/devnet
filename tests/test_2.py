@@ -22,12 +22,15 @@ class Test2(BaseTest):
         #'["0.0.0.0:7517/j7qWfWaJRVp25ZsnCu9rJ4PmhigZBtesB4YmQHqqPvtR"]' like
         seeders_str = '["' + '","'.join(self.messages) + ']"'
         print(seeders_str)
+        print(self.messages)
         self.messages = []
+        print(self.messages)
 
         for i in range(0, 3):
             self.start_node_agent_pair(seeders_str)
         self.wait_for_response(3)
 
+        print(self.messages)
         self.assertEqual(3, len(self.messages))
         for i in range(0, 6):
             self.assertNotEqual(b'NULL', self.messages[i])
