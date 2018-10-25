@@ -24,11 +24,10 @@ class BaseDevnetCleaner:
 
     def cleanup(self, subscriber, subscription_path):
         try:
-            future = subscriber.subscribe(subscription_path, callback=self.callback)
+            subscriber.subscribe(subscription_path, callback=self.callback)
             while not self.endFlag:
                 self.endFlag = True
                 time.sleep(1)
-            future.result(timeout=1)
         except:
             pass
 
