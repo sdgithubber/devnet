@@ -40,7 +40,7 @@ class BaseDevnetAgent:
         print(message)
         self.message = message.data
         message.ack()
-        if self.phase != message.attributes.phase:
+        if self.phase != message.attributes['phase']:
             return;
         print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + " GOT_DOWN_MSG " + "".join(map(chr, self.message))) 
 
