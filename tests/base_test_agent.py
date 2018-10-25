@@ -36,6 +36,7 @@ class BaseDevnetAgent:
             f.write(new_config)
 
     def callback(self, message):
+        print(message)
         self.message = message.data
         message.ack()
         print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + " GOT_DOWN_MSG " + "".join(map(chr, self.message))) 
