@@ -1,4 +1,5 @@
 from dockers import Docker
+from base_cleaner import BaseDevnetCleaner
 import config
 import os
 import time
@@ -8,6 +9,9 @@ import spur
 
 class BaseTest(unittest.TestCase):
     def setUp(self):
+        t = BaseDevnetCleaner()
+        t.clean()
+
         self.endFlag = False
         self.testLen = 20
         self.message = b'NULL'

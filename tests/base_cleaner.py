@@ -27,9 +27,11 @@ class BaseDevnetCleaner:
             self.endFlag = True
             time.sleep(1)
 
+    def clean(self):
+        for i in range(0, 10):
+            self.cleanup(self.subscriber_downstream, self.get_downstream_subscription_path(i))
+        self.cleanup(self.subscriber_upstream, self.subscription_path_upstream)
+
 if __name__ == '__main__':
     t = BaseDevnetCleaner()
-
-    for i in range(0, 10):
-        t.cleanup(t.subscriber_downstream, t.get_downstream_subscription_path(i))
-    t.cleanup(t.subscriber_upstream, t.subscription_path_upstream)
+    t.clean()
