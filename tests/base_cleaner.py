@@ -18,6 +18,7 @@ class BaseDevnetCleaner:
         return self.subscriber_downstream.subscription_path(self.project, config.CONFIG['subscription_name_downstream'] + '_' + str(i))
 
     def callback(self, message):
+        print('Cleaned: ' + message.data.decode("utf-8"))
         self.endFlag = False
         message.ack()
 
