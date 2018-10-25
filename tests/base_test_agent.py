@@ -24,6 +24,7 @@ class BaseDevnetAgent:
         subscription_name_downstream = os.environ['SUBSCRIPTION_NAME_DOWNSTREAM']
         self.subscriber_downstream = pubsub_v1.SubscriberClient()
         self.subscription_path_downstream = self.subscriber_downstream.subscription_path(project, subscription_name_downstream)
+        time.sleep(5)
 
     def modify_seeders(self, seeders):
         file_name = "/opt/devnet/test.config.toml"
