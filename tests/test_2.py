@@ -17,10 +17,11 @@ class Test2(BaseTest):
 
         self.assertEqual(3, len(seeds))
 
+        #'["0.0.0.0:7517/j7qWfWaJRVp25ZsnCu9rJ4PmhigZBtesB4YmQHqqPvtR"]' like
         seeders_str = '["' + str(b'","'.join(seeds)) + ']"'
         print(seeders_str)
         for i in range(0, 3):
-            self.start_node_agent_pair('["0.0.0.0:7517/j7qWfWaJRVp25ZsnCu9rJ4PmhigZBtesB4YmQHqqPvtR"]')
+            self.start_node_agent_pair(seeders_str)
             self.send_and_wait('GET_NODE_ID')
             self.assertNotEqual(b'NULL', self.message)
             self.assertLess(15, len(self.message))
