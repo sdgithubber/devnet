@@ -9,6 +9,7 @@ class Test2(BaseTest):
     def test_sendId(self):
         seeds = []
         for i in range(0, 3):
+            print(i)
             self.start_node_agent_pair()
         self.send('GET_NODE_ID')
         for i in range(0, 3):

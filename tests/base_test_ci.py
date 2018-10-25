@@ -36,6 +36,7 @@ class BaseTest(unittest.TestCase):
         self.endFlag = True
 
     def send(self, data):
+        print(data)
         data = data.encode('utf-8')
         self.publisher_downstream.publish(self.topic_path_downstream, data=data)
 
