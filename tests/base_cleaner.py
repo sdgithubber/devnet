@@ -23,11 +23,14 @@ class BaseDevnetCleaner:
         message.ack()
 
     def cleanup(self, subscriber, subscription_path):
-        future = subscriber.subscribe(subscription_path, callback=self.callback)
-        while not self.endFlag:
-            self.endFlag = True
-            time.sleep(1)
-        future.result(timeout=1)
+        try:
+            future = subscriber.subscribe(subscription_path, callback=self.callback)
+            while not self.endFlag:
+                self.endFlag = True
+                time.sleep(1)
+            future.result(timeout=1)
+        except:
+            pass
 
     def clean(self):
         for i in range(0, 10):
