@@ -12,7 +12,7 @@ class Test2(BaseTest):
         seeds = []
         for i in range(0, 3):
             self.start_node_agent_pair()
-        self.send('GET_NODE_ID', phase)
+        self.send('GET_NODE_ID')
         self.wait_for_response(3)
         
         self.assertEqual(3, len(self.messages))
@@ -39,5 +39,7 @@ class Test2(BaseTest):
             self.assertNotEqual(b'NULL', self.messages[i])
             self.assertLess(15, len(self.messages[i]))
 
+        self.send("END", phase_0)
+        self.send("END", phase_1)
 if __name__ == '__main__':
     unittest.main()

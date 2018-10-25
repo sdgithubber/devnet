@@ -39,7 +39,9 @@ class BaseTest(unittest.TestCase):
         self.phase = 'test_' + str(test) + '_phase_' + str(phase) + '_' + str(calendar.timegm(time.gmtime()))
         return self.phase
 
-    def send(self, data, phase=self.phase):
+    def send(self, data, phase=null):
+        if phase == null:
+            phase = self.phase
         print(data)
         data = data.encode('utf-8')
         self.publisher_downstream.publish(self.topic_path_downstream, data=data, phase=phase)
@@ -51,11 +53,13 @@ class BaseTest(unittest.TestCase):
                 return
             time.sleep(1)
 
-    def send_and_wait(self, data, phase=self.phase):
+    def send_and_wait(self, data, phase=null):
         self.send(data, phase)
         self.wait_for_response()
 
-    def start_node_agent_pair(self, phase=self.phase, seeders=config.CONFIG['no_seeders']):
+    def start_node_agent_pair(self, phase=null, seeders=config.CONFIG['no_seeders']):
+        if phase == null:
+            phase = self.phase
         docker = Docker()
         docker.stop('agent_' + str(self.agents))
         docker.start('docker run --network=devnet --name agent_' + str(self.agents) + ' -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs' + str(self.agents) + ':/opt/logs -e SUBSCRIPTION_NAME_DOWNSTREAM=devnet_tests_agent_' + str(self.agents) + ' -e PHASE=' + phase + '-e NODE=' + str(self.agents) + ' -e SEEDERS=' + seeders + ' spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py')
