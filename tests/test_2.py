@@ -9,7 +9,6 @@ class Test2(BaseTest):
     def test_sendId(self):
         seeds = []
         for i in range(0, 3):
-            print(i)
             self.start_node_agent_pair()
         self.send('GET_NODE_ID')
         self.wait_for_response(3)
@@ -27,10 +26,9 @@ class Test2(BaseTest):
 
         for i in range(0, 3):
             self.start_node_agent_pair(seeders_str)
+        self.wait_for_response(3)
 
-        self.send('GET_NODE_ID')
-        self.wait_for_response(6)
-        self.assertEqual(6, len(self.messages))
+        self.assertEqual(3, len(self.messages))
         for i in range(0, 6):
             self.assertNotEqual(b'NULL', self.messages[i])
             self.assertLess(15, len(self.messages[i]))
