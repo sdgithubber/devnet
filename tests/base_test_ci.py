@@ -37,7 +37,7 @@ class BaseTest(unittest.TestCase):
     def send(self, data):
         print(data)
         data = data.encode('utf-8')
-        self.publisher_downstream.publish(self.topic_path_downstream, data=data, attributes = {'time' : calendar.timegm(time.gmtime())})
+        self.publisher_downstream.publish(self.topic_path_downstream, data=data, attributes = {'time' : str(calendar.timegm(time.gmtime()))})
 
     def wait_for_response(self, num_messages = 1):
         for i in range(0, self.testLen):
