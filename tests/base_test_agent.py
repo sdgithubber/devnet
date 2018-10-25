@@ -58,15 +58,15 @@ class BaseDevnetAgent:
 
     def get_node_id(self):
         time.sleep(15)
-        node_id = 'NULL'
         try:
             node_id = next(os.walk('/opt/logs'))[1][0]
         except Exception as e:
             print('Error finding log folder')
             print(e.__doc__ )
+            return 'NULL'
 
         print('NodeId:' + node_id)
-        return node_id
+        return 'node_' + self.node + ':7513/' + node_id
 
 if __name__ == '__main__':
     t = BaseDevnetAgent()
