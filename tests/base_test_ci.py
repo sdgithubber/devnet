@@ -29,6 +29,7 @@ class BaseTest(unittest.TestCase):
         self.send('END')
 
     def callback(self, message):
+        print(message.publishTime))
         self.messages.append(message.data.decode("utf-8"))
         message.ack()
 
