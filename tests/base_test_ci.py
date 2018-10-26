@@ -57,7 +57,7 @@ class BaseTest(unittest.TestCase):
         self.send(data, phase)
         self.wait_for_response()
 
-    def start_node_agent_pair(self, phase=None, seeders=config.CONFIG['no_seeders']):
+    def start_node_agent_pair(self, seeders=config.CONFIG['no_seeders'], phase=None):
         if phase == None:
             phase = self.phase
         docker = Docker()
