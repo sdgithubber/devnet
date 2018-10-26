@@ -42,9 +42,9 @@ class BaseDevnetAgent:
         message.ack()
         print(message.attributes['phase'])
         if self.phase != message.attributes['phase']:
-            #return;
             print("NO_MESSAGE")
-        print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + " GOT_DOWN_MSG " + "".join(map(chr, self.message))) 
+            return
+        print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + " GOT_DOWN_MSG " + "".join(map(chr, self.message)))
 
         if b'END' == self.message:
             self.docker.stop('node_' + self.node)
