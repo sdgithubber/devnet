@@ -29,7 +29,6 @@ install:
 	@make build
 
 clean_containers:
-	@(docker stop cleaner 2>/dev/null && docker rm cleaner 2>/dev/null) || true
 	@docker stop test_server 2>/dev/null || true
 
 run:
