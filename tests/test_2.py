@@ -23,7 +23,7 @@ class Test2(BaseTest):
 
         #'["0.0.0.0:7517/j7qWfWaJRVp25ZsnCu9rJ4PmhigZBtesB4YmQHqqPvtR"]' like
         phase_1 = self.create_phase(2, 1)
-        seeders_str = '["' + '","'.join(self.messages) + '"]'
+        seeders_str = '\'["' + '","'.join(self.messages) + '"]\''
         print(seeders_str)
         print(self.messages)
         self.messages = []
