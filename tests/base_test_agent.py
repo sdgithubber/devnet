@@ -10,7 +10,7 @@ from logging import Logger
 
 class BaseDevnetAgent:
     def __init__(self):
-        logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
+        logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
         self.endFlag = False
     
         project = config.CONFIG['project']
@@ -21,7 +21,7 @@ class BaseDevnetAgent:
         self.node = os.environ['NODE']
         self.docker = Docker()
         self.docker.stop('node_' + self.node)
-        logging.debug('seeders:' + os.environ['SEEDERS'])
+        logging.info('seeders:' + os.environ['SEEDERS'])
         self.modify_seeders(os.environ['SEEDERS'])
         self.phase = os.environ['PHASE']
         self.docker.start('docker run --network=devnet --name node_' + self.node + ' -p ' + str(7513 + int(self.node)) + ':7513 -v /root/spacemesh/devnet/logs' + self.node + ':/root/.spacemesh/nodes/ -v /root/spacemesh/devnet/tests/test.config.toml:/go/test.config.toml spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh -config /go/test.config.toml')
@@ -40,14 +40,14 @@ class BaseDevnetAgent:
             f.write(new_config)
 
     def callback(self, message):
-        logging.debug(message)
+        logging.info(message)
         self.message = message.data
         message.ack()
-        logging.debug(message.attributes['phase'])
+        logging.info(message.attributes['phase'])
         if self.phase != message.attributes['phase']:
-            logging.debug("NO_MESSAGE")
+            logging.info("NO_MESSAGE")
             return
-        logging.debug(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + " GOT_DOWN_MSG " + "".join(map(chr, self.message)))
+        logging.info(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + " GOT_DOWN_MSG " + "".join(map(chr, self.message)))
 
         if b'END' == self.message:
             self.docker.stop('node_' + self.node)
@@ -77,7 +77,7 @@ class BaseDevnetAgent:
             logging.warning(e.__doc__ )
             return 'NULL'
 
-        logging.debug('NodeId:' + node_id)
+        logging.info('NodeId:' + node_id)
         return 'node_' + self.node + ':7513/' + node_id
 
 if __name__ == '__main__':

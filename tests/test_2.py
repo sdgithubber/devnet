@@ -25,16 +25,16 @@ class Test2(BaseTest):
         #'["0.0.0.0:7517/j7qWfWaJRVp25ZsnCu9rJ4PmhigZBtesB4YmQHqqPvtR"]' like
         phase_1 = self.create_phase(2, 1)
         seeders_str = '\'["' + '","'.join(self.messages) + '"]\''
-        logging.debug(seeders_str)
-        logging.debug(self.messages)
+        logging.info(seeders_str)
+        logging.info(self.messages)
         self.messages = []
-        logging.debug(self.messages)
+        logging.info(self.messages)
 
         for i in range(0, 3):
             self.start_node_agent_pair(seeders_str)
         self.wait_for_response(3)
 
-        logging.debug(self.messages)
+        logging.info(self.messages)
         self.assertEqual(3, len(self.messages))
         for i in range(0, 3):
             self.assertNotEqual(b'NULL', self.messages[i])
