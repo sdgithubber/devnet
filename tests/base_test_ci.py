@@ -7,11 +7,12 @@ from google.cloud import pubsub_v1
 import unittest
 import spur
 import logging
+from logging import Logger
 
 class BaseTest(unittest.TestCase):
     def setUp(self):
         logging.basicConfig(format='%(asctime)s %(message)s')
-        logging.setLevel(DEBUG)
+        Logger.setLevel(DEBUG)
 
         self.create_phase(0, 0)
         self.endFlag = False
