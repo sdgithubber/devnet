@@ -10,7 +10,6 @@ import logging
 class Test2(BaseTest):
     def test_sendId(self):
         phase_0 = self.create_phase(2, 0)
-        seeds = []
         for i in range(0, 3):
             self.start_node_agent_pair()
         self.send('GET_NODE_ID')
@@ -20,7 +19,6 @@ class Test2(BaseTest):
         for i in range(0, 3):
             self.assertNotEqual(b'NULL', self.messages[i])
             self.assertLess(15, len(self.messages[i]))
-            seeds.append(self.messages[i])
 
         #'["0.0.0.0:7517/j7qWfWaJRVp25ZsnCu9rJ4PmhigZBtesB4YmQHqqPvtR"]' like
         phase_1 = self.create_phase(2, 1)
