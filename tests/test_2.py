@@ -5,6 +5,7 @@ import time
 import calendar
 from google.cloud import pubsub_v1
 import unittest
+import logging
 
 class Test2(BaseTest):
     def test_sendId(self):
