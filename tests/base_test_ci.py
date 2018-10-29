@@ -11,8 +11,7 @@ from logging import Logger
 
 class BaseTest(unittest.TestCase):
     def setUp(self):
-        logging.basicConfig(format='%(asctime)s %(message)s')
-        Logger.setLevel(logging.DEBUG)
+        logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 
         self.create_phase(0, 0)
         self.endFlag = False
