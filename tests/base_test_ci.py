@@ -34,6 +34,8 @@ class BaseTest(unittest.TestCase):
         self.send('END')
 
     def callback(self, message):
+        if self.phase != message.attributes['phase']:
+            return
         logging.info(message)
         self.messages.append(message.data.decode("utf-8"))
         message.ack()
