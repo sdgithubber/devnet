@@ -70,7 +70,7 @@ class BaseDevnetAgent:
         self.publisher_upstream.publish(self.topic_path_upstream, data=data, phase=self.phase)
 
     def get_node_id(self):
-        time.sleep(15)
+        time.sleep(10)
         try:
             node_id = next(os.walk('/opt/logs'))[1][0]
         except Exception as e:
