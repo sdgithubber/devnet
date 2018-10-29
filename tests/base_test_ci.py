@@ -51,9 +51,9 @@ class BaseTest(unittest.TestCase):
 
     def wait_for_response(self, num_messages = 1):
         for i in range(0, self.testLen):
-            if len(self.messages) == num_messages:
-                logging.info(self.messages)
-                return
+#            if len(self.messages) == num_messages:
+#                logging.info(self.messages)
+#                return
             time.sleep(1)
 
     def send_and_wait(self, data, phase=None):
