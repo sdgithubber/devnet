@@ -10,6 +10,7 @@ import logging
 class BaseDevnetAgent:
     def __init__(self):
         logging.basicConfig(format='%(asctime)s %(message)s')
+        logging.setLevel(DEBUG)
         self.endFlag = False
     
         project = config.CONFIG['project']
