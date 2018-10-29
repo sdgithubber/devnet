@@ -1,13 +1,14 @@
 import config
 import spur
+import logging
 
 class Docker():
     def start(self, cmd):
         try:
-            print(cmd)
-            print(config.CONFIG['host'])
-            print(config.CONFIG['host_user'])
-            print(config.CONFIG['host_password'])
+            logging.debug(cmd)
+            logging.debug(config.CONFIG['host'])
+            logging.debug(config.CONFIG['host_user'])
+            logging.debug(config.CONFIG['host_password'])
             shell = spur.SshShell(
                 hostname=config.CONFIG['host'], 
                 username=config.CONFIG['host_user'], 
@@ -16,10 +17,10 @@ class Docker():
             )
             with shell:
                 result = shell.spawn(cmd.split(' '))
-                print('Docker started')
+                logging.debug('Docker started')
         except Exception as e:
-            print('Docker start failed')
-            print(e.__doc__ )
+            logging.warning('Docker start failed')
+            logging.warning(e.__doc__ )
 
     def run_cmd_interactive(self, cmd):
         try:
@@ -31,14 +32,11 @@ class Docker():
             )
             with shell:
                 result = shell.run(cmd.split(' '))
-                print('Run interactive: ' + cmd)
+                logging.debug('Run interactive: ' + cmd)
         except Exception as e:
-            print('Run interactive failed: ' + cmd)
-            print(e.__doc__ )
+            logging.warning('Run interactive failed: ' + cmd)
+            logging.warning(e.__doc__ )
 
     def stop(self, name):
         self.run_cmd_interactive("docker stop " + name)
         self.run_cmd_interactive("docker rm " + name)
-
-if __name__ == '__main__':
-    unittest.main()
