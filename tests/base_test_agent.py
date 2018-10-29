@@ -67,6 +67,7 @@ class BaseDevnetAgent:
     def send(self, data):
         data = data.encode('utf-8')
         self.publisher_upstream.publish(self.topic_path_upstream, data=data, phase=self.phase)
+        logging.INFO("sent " + data)
 
     def get_node_id(self):
         time.sleep(15)
