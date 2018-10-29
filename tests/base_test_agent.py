@@ -41,22 +41,22 @@ class BaseDevnetAgent:
 
     def callback(self, message):
         logging.info(message)
-        self.message = message.data
+        self.message = "".join(map(chr, message.data))
         message.ack()
         logging.info(message.attributes['phase'])
         if self.phase != message.attributes['phase']:
             logging.info("NO_MESSAGE")
             return
-        logging.info(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + " GOT_DOWN_MSG " + "".join(map(chr, self.message)))
+        logging.info(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + " GOT_DOWN_MSG " + self.message)
 
-        if b'END' == self.message:
+        if 'END' == self.message:
             self.docker.stop('node_' + self.node)
             self.endFlag = True
-        elif b'SEND_UP' == self.message:
+        elif 'SEND_UP' == self.message:
             self.send('UP')
-        elif b'GET_NODE_ID' == self.message:
+        elif 'GET_NODE_ID' == self.message:
             self.send(self.get_node_id())
-        elif b'SHUTDOWN_NODE' == self.message:
+        elif 'SHUTDOWN_NODE' == self.message:
             self.docker.stop('node_' + self.node)
 
     def act_on_request(self):
