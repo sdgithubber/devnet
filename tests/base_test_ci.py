@@ -6,9 +6,12 @@ import calendar
 from google.cloud import pubsub_v1
 import unittest
 import spur
+import logging
 
 class BaseTest(unittest.TestCase):
     def setUp(self):
+        logging.basicConfig(format='%(asctime)s %(message)s')
+
         self.create_phase(0, 0)
         self.endFlag = False
         self.testLen = 15
@@ -30,7 +33,7 @@ class BaseTest(unittest.TestCase):
         self.send('END')
 
     def callback(self, message):
-        print(message)
+        logging.debug(message)
         self.messages.append(message.data.decode("utf-8"))
         message.ack()
 
@@ -41,14 +44,14 @@ class BaseTest(unittest.TestCase):
     def send(self, data, phase=None):
         if phase == None:
             phase = self.phase
-        print(data)
+        logging.debug(data)
         data = data.encode('utf-8')
         self.publisher_downstream.publish(self.topic_path_downstream, data=data, phase=phase)
 
     def wait_for_response(self, num_messages = 1):
         for i in range(0, self.testLen):
             if len(self.messages) == num_messages:
-                print(self.messages)
+                logging.debug(self.messages)
                 return
             time.sleep(1)
 
