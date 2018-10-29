@@ -30,6 +30,7 @@ class Test2(BaseTest):
 
         for i in range(0, 3):
             self.start_node_agent_pair(seeders_str)
+        self.send('GET_NODE_ID')
         self.wait_for_response(3)
 
         logging.info(self.messages)
