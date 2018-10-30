@@ -9,10 +9,10 @@ class Docker():
 
     def start(self, cmd):
         try:
-            logging.debug(cmd)
-            logging.debug(config.CONFIG['host'])
-            logging.debug(config.CONFIG['host_user'])
-            logging.debug(config.CONFIG['host_password'])
+            logging.info(cmd)
+            logging.info(config.CONFIG['host'])
+            logging.info(config.CONFIG['host_user'])
+            logging.info(config.CONFIG['host_password'])
             shell = spur.SshShell(
                 hostname=config.CONFIG['host'], 
                 username=config.CONFIG['host_user'], 
@@ -21,7 +21,7 @@ class Docker():
             )
             with shell:
                 result = shell.spawn(cmd.split(' '))
-                logging.debug('Docker started')
+                logging.info('Docker started')
         except Exception as e:
             logging.warning('Docker start failed')
             logging.warning(e.__doc__ )
@@ -36,7 +36,7 @@ class Docker():
             )
             with shell:
                 result = shell.run(cmd.split(' '))
-                logging.debug('Run interactive: ' + cmd)
+                logging.info('Run interactive: ' + cmd)
         except Exception as e:
             logging.warning('Run interactive failed: ' + cmd)
             logging.warning(e.__doc__ )
