@@ -30,7 +30,7 @@ class Docker():
             logging.warning(e.__doc__ )
 
     def start(self, cmd):
-        self.run_cmd(self, cmd, False)
+        self.run_cmd(cmd, interactive = False)
 
     def stop(self, name):
         self.run_cmd("docker stop " + name)
