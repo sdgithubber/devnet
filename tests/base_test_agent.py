@@ -49,7 +49,7 @@ class BaseDevnetAgent:
         if self.phase != message.attributes['phase']:
             logging.info("NO_MESSAGE")
             return
-        logging.info(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + " GOT_DOWN_MSG " + self.message)
+        logging.info("GOT_DOWN_MSG " + self.message)
 
         if 'END' == self.message:
             self.docker.stop('node_' + self.node)
