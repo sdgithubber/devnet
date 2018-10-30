@@ -31,12 +31,13 @@ class BaseDevnetAgent:
         time.sleep(5)
 
     def modify_seeders(self, seeders):
-        file_name = "/opt/devnet/test.config.toml"
+        file_name = "/opt/basecnf/test.config.toml"
+        out_file_name = "/opt/cnf/test.config.toml"
 
         with open(file_name) as f:
             new_config = f.read().replace('BOOT_NODES', 'bootnodes = ' + seeders)
 
-        with open(file_name, "w") as f:
+        with open(out_file_name, "w") as f:
             f.write(new_config)
 
     def callback(self, message):
