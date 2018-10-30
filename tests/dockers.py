@@ -20,7 +20,7 @@ class Docker():
                 missing_host_key=spur.ssh.MissingHostKey.accept
             )
             with shell:
-                result = shell.spawn(cmd.split(' '))
+                result = shell.run(cmd.split(' '))
                 logging.info('Docker started')
         except Exception as e:
             logging.warning('Docker start failed')
