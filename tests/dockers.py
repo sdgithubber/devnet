@@ -1,8 +1,12 @@
 import config
 import spur
 import logging
+from logging import Logger
 
 class Docker():
+    def __init__:
+        logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
+
     def start(self, cmd):
         try:
             logging.debug(cmd)
