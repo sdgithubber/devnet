@@ -7,7 +7,7 @@ class Docker():
     def __init__(self):
         logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 
-    def start(self, cmd):
+    def run_cmd(self, cmd, interactive = True):
         try:
             logging.info(cmd)
             logging.info(config.CONFIG['host'])
@@ -20,27 +20,18 @@ class Docker():
                 missing_host_key=spur.ssh.MissingHostKey.accept
             )
             with shell:
-                result = shell.spawn(cmd.split(' '))
-                logging.info('Docker started')
+                if interactive:
+                    result = shell.run(cmd.split(' '))
+                else:
+                    result = shell.spawn(cmd.split(' '))
+                logging.info('Run: ' + cmd)
         except Exception as e:
-            logging.warning('Docker start failed')
+            logging.warning('Run failed: ' + cmd)
             logging.warning(e.__doc__ )
 
-    def run_cmd_interactive(self, cmd):
-        try:
-            shell = spur.SshShell(
-                hostname=config.CONFIG['host'], 
-                username=config.CONFIG['host_user'], 
-                password=config.CONFIG['host_password'], 
-                missing_host_key=spur.ssh.MissingHostKey.accept
-            )
-            with shell:
-                result = shell.run(cmd.split(' '))
-                logging.info('Run interactive: ' + cmd)
-        except Exception as e:
-            logging.warning('Run interactive failed: ' + cmd)
-            logging.warning(e.__doc__ )
+    def start(self, cmd):
+        run_cmd(self, cmd, interactive = False):
 
     def stop(self, name):
-        self.run_cmd_interactive("docker stop " + name)
-        self.run_cmd_interactive("docker rm " + name)
+        self.run_cmd("docker stop " + name)
+        self.run_cmd("docker rm " + name)
