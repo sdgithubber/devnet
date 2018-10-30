@@ -4,7 +4,7 @@ import logging
 from logging import Logger
 
 class Docker():
-    def __init__:
+    def __init__(self):
         logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 
     def start(self, cmd):
