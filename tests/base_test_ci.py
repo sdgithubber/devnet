@@ -1,14 +1,21 @@
+from dockers import Docker
 import config
 import os
 import time
+import calendar
 from google.cloud import pubsub_v1
 import unittest
 import spur
+import logging
+from logging import Logger
 
 class BaseTest(unittest.TestCase):
     def setUp(self):
+        logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
+
+        self.create_phase()
         self.endFlag = False
-        self.testLen = 20
+        self.testLen = 30
         self.message = b'NULL'
         project = config.CONFIG['project']
         subscription_name_upstream = config.CONFIG['subscription_name_upstream']
@@ -21,73 +28,43 @@ class BaseTest(unittest.TestCase):
         self.topic_path_downstream = self.publisher_downstream.topic_path(project, topic_name_downstream)
 
         self.agents = 0
+        self.messages = []
 
     def tearDown(self):
         self.send('END')
 
     def callback(self, message):
-        self.message = message.data
+        if self.phase != message.attributes['phase']:
+            return
+        logging.info(message)
+        self.messages.append(message.data.decode("utf-8"))
         message.ack()
-        self.endFlag = True
+
+    def create_phase(self, phase = ""):
+        self.phase = 'phase_' + str(phase) + '_' + str(calendar.timegm(time.gmtime()))
+        return self.phase
 
     def send(self, data):
+        logging.info(data)
         data = data.encode('utf-8')
-        self.publisher_downstream.publish(self.topic_path_downstream, data=data)
+        self.publisher_downstream.publish(self.topic_path_downstream, data=data, phase=self.phase)
 
-    def wait_for_response(self):
+    def wait_for_response(self, num_messages = 1):
         for i in range(0, self.testLen):
-            if self.endFlag:
-                print(self.message)
+            if len(self.messages) == num_messages:
+                logging.info(self.messages)
                 break
             time.sleep(1)
 
-    def send_and_wait(self, data):
+    def send_and_wait(self, data, phase=None):
         self.send(data)
         self.wait_for_response()
 
-    def start_docker(self, cmd):
-        try:
-            print(cmd)
-            print(config.CONFIG['host'])
-            print(config.CONFIG['host_user'])
-            print(config.CONFIG['host_password'])
-            shell = spur.SshShell(
-                hostname=config.CONFIG['host'], 
-                username=config.CONFIG['host_user'], 
-                password=config.CONFIG['host_password'], 
-                missing_host_key=spur.ssh.MissingHostKey.accept
-            )
-            with shell:
-                result = shell.spawn(cmd.split(' '))
-                print('Docker started')
-        except Exception as e:
-            print('Docker start failed')
-            print(e.__doc__ )
-
-    def run_cmd_interactive(self, cmd):
-        try:
-            shell = spur.SshShell(
-                hostname=config.CONFIG['host'], 
-                username=config.CONFIG['host_user'], 
-                password=config.CONFIG['host_password'], 
-                missing_host_key=spur.ssh.MissingHostKey.accept
-            )
-            with shell:
-                result = shell.run(cmd.split(' '))
-                print('Run interactive: ' + cmd)
-        except Exception as e:
-            print('Run interactive failed: ' + cmd)
-            print(e.__doc__ )
-
-    def stop_docker(self, name):
-        self.run_cmd_interactive("docker stop " + name)
-        self.run_cmd_interactive("docker rm " + name)
-
-    def start_node_agent_pair(self):
-        self.stop_docker('node_' + str(self.agents))
-        self.stop_docker('agent_' + str(self.agents))
-        self.start_docker('docker run --network=devnet --name node_' + str(self.agents) + ' -p ' + str(7513 + self.agents) + ':7513 -v /root/spacemesh/devnet/logs:/root/.spacemesh/nodes/ spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh')
-        self.start_docker('docker run --network=devnet --name agent_' + str(self.agents) + ' -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs:/opt/logs -e SUBSCRIPTION_NAME_DOWNSTREAM=devnet_tests_agent_' + str(self.agents) + ' -e NODE=node_' + str(self.agents) + ' spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py')
+    def start_node_agent_pair(self, seeders=config.CONFIG['no_seeders']):
+        docker = Docker()
+        docker.stop('agent_' + str(self.agents))
+        cmd = 'docker run --network=devnet --name agent_' + str(self.agents) + ' -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs' + str(self.agents) + ':/opt/logs -v /root/spacemesh/devnet/cnf' + str(self.agents) + ':/opt/cnf/ -e SUBSCRIPTION_NAME_DOWNSTREAM=devnet_tests_agent_' + str(self.agents) + ' -e PHASE=' + self.phase + ' -e NODE=' + str(self.agents) + ' -e SEEDERS=' + seeders + ' spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py'
+        docker.start(cmd)
         self.agents += 1
 
 if __name__ == '__main__':

@@ -2,20 +2,46 @@ from base_test_ci import BaseTest
 import config
 import os
 import time
+import calendar
 from google.cloud import pubsub_v1
 import unittest
+import logging
 
 class Test2(BaseTest):
     def test_sendId(self):
-        seeds = []
+        phase_0 = self.create_phase("2.0")
         for i in range(0, 3):
             self.start_node_agent_pair()
-            self.send_and_wait('GET_NODE_ID')
-            self.assertNotEqual(b'NULL', self.message)
-            self.assertLess(5, len(self.message))
-            seeds.append(self.message)
+        self.send('GET_NODE_ID')
+        self.wait_for_response(3)
+        
+        self.assertEqual(3, len(self.messages))
+        for i in range(0, 3):
+            self.assertNotEqual(b'NULL', self.messages[i])
+            self.assertLess(15, len(self.messages[i]))
 
-        self.assertEqual(3, len(seeds))
+        #'["0.0.0.0:7517/j7qWfWaJRVp25ZsnCu9rJ4PmhigZBtesB4YmQHqqPvtR"]' like
+        phase_1 = self.create_phase("2.1")
+        seeders_str = '\'["' + '","'.join(self.messages) + '"]\''
+        logging.info(seeders_str)
+        logging.info(self.messages)
+        self.messages = []
+        logging.info(self.messages)
 
+        for i in range(0, 3):
+            self.start_node_agent_pair(seeders=seeders_str)
+        self.send('GET_NODE_ID')
+        self.wait_for_response(3)
+
+        logging.info(self.messages)
+        self.assertEqual(3, len(self.messages))
+        for i in range(0, 3):
+            self.assertNotEqual(b'NULL', self.messages[i])
+            self.assertLess(15, len(self.messages[i]))
+
+        self.phase = phase_0
+        self.send("END")
+        self.phase = phase_1
+        self.send("END")
 if __name__ == '__main__':
     unittest.main()
