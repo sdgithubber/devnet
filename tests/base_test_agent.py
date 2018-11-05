@@ -44,7 +44,7 @@ class BaseDevnetAgent:
         out_file_name = "/opt/cnf/test.config.toml"
 
         with open(file_name) as f:
-            new_config = f.read().replace('BOOT_NODES', 'bootnodes = ' + seeders).replace('BOOTSTRAP_VALUE', bootstrap)
+            new_config = f.read().replace('BOOT_NODES', 'bootnodes = ' + seeders[1:-1]).replace('BOOTSTRAP_VALUE', bootstrap)
 
         with open(out_file_name, "w") as f:
             f.write(new_config)
