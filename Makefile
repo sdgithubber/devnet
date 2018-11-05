@@ -55,7 +55,7 @@ build_agent_packed:
 	@docker push gcr.io/spacemesh-198810/devnet_agent_packed
 
 build_node:
-	@wget https://raw.githubusercontent.com/spacemeshos/go-spacemesh/develop/Dockerfile -O Dockerfile.spacemesh.node
-	@docker build -f $(shell pwd)/Dockerfile.spacemesh.node -t spacemesh/node:latest .
+	@wget https://raw.githubusercontent.com/spacemeshos/go-spacemesh/$(NODE)/Dockerfile -O Dockerfile.spacemesh.node
+	@docker build -f $(shell pwd)/Dockerfile.spacemesh.node --build-arg BRANCH=$(NODE) -t spacemesh/node:latest .
 	@docker tag spacemesh/devnet_agent gcr.io/spacemesh-198810/devnet_agent
 	@docker push gcr.io/spacemesh-198810/node
