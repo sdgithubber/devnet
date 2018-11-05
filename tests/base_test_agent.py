@@ -12,24 +12,32 @@ class BaseDevnetAgent:
     def __init__(self):
         logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
         self.endFlag = False
-    
+
+        self.node = os.environ['NODE']
+        self.phase = os.environ['PHASE']
+        self.node_port = config.CONFIG['node_port']
+        self.docker = Docker()
+        self.start_node()
+        self.establish_links()
+
+    def establish_links():
         project = config.CONFIG['project']
         topic_name_upstream = config.CONFIG['topic_name_upstream']
         self.publisher_upstream = pubsub_v1.PublisherClient()
         self.topic_path_upstream = self.publisher_upstream.topic_path(project, topic_name_upstream)
 
-        self.node = os.environ['NODE']
-        self.docker = Docker()
-        self.docker.stop('node_' + self.node)
-        logging.info('seeders:' + os.environ['SEEDERS'])
-        self.modify_seeders(os.environ['SEEDERS'])
-        self.phase = os.environ['PHASE']
-        self.node_port = config.CONFIG['node_port']
-        self.docker.start('docker run --network=devnet --name node_' + self.node + ' -p ' + str(self.node_port + int(self.node)) + ':' + str(self.node_port) + ' -v /root/spacemesh/devnet/logs' + self.node + ':/root/.spacemesh/nodes/ -v /root/spacemesh/devnet/cnf' + self.node + '/test.config.toml:/go/test.config.toml spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh -config /go/test.config.toml')
         subscription_name_downstream = os.environ['SUBSCRIPTION_NAME_DOWNSTREAM']
         self.subscriber_downstream = pubsub_v1.SubscriberClient()
         self.subscription_path_downstream = self.subscriber_downstream.subscription_path(project, subscription_name_downstream)
-        time.sleep(5)
+
+    def start_node(self):
+        logging.info('seeders:' + os.environ['SEEDERS'])
+        self.modify_seeders(os.environ['SEEDERS'])
+        self.docker.stop('node_' + self.node)
+        self.docker.start('docker run --network=devnet --name node_' + self.node + ' -p ' + str(self.node_port + int(self.node)) + ':' + str(self.node_port) + ' -v /root/spacemesh/devnet/logs' + self.node + ':/root/.spacemesh/nodes/ -v /root/spacemesh/devnet/cnf' + self.node + '/test.config.toml:/go/test.config.toml spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh -config /go/test.config.toml')
+
+        while self.get_node_id() != "NULL":
+            time.sleep(1)
 
     def modify_seeders(self, seeders):
         file_name = "/opt/basecnf/test.config.toml"
@@ -72,7 +80,6 @@ class BaseDevnetAgent:
         self.publisher_upstream.publish(self.topic_path_upstream, data=data, phase=self.phase)
 
     def get_node_id(self):
-        time.sleep(10)
         try:
             node_id = next(os.walk('/opt/logs'))[1][0]
         except Exception as e:

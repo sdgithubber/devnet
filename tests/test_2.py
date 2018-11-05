@@ -9,7 +9,7 @@ import logging
 
 class Test2(BaseTest):
     def test_sendId(self):
-        phase_0 = self.create_phase(2, 0)
+        phase_0 = self.create_phase("2.0")
         for i in range(0, 3):
             self.start_node_agent_pair()
         self.send('GET_NODE_ID')
@@ -21,7 +21,7 @@ class Test2(BaseTest):
             self.assertLess(15, len(self.messages[i]))
 
         #'["0.0.0.0:7517/j7qWfWaJRVp25ZsnCu9rJ4PmhigZBtesB4YmQHqqPvtR"]' like
-        phase_1 = self.create_phase(2, 1)
+        phase_1 = self.create_phase("2.1")
         seeders_str = '\'["' + '","'.join(self.messages) + '"]\''
         logging.info(seeders_str)
         logging.info(self.messages)

@@ -13,7 +13,7 @@ class BaseTest(unittest.TestCase):
     def setUp(self):
         logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 
-        self.create_phase(0, 0)
+        self.create_phase()
         self.endFlag = False
         self.testLen = 30
         self.message = b'NULL'
@@ -40,16 +40,14 @@ class BaseTest(unittest.TestCase):
         self.messages.append(message.data.decode("utf-8"))
         message.ack()
 
-    def create_phase(self, test, phase):
-        self.phase = 'test_' + str(test) + '_phase_' + str(phase) + '_' + str(calendar.timegm(time.gmtime()))
+    def create_phase(self, phase = ""):
+        self.phase = 'phase_' + str(phase) + '_' + str(calendar.timegm(time.gmtime()))
         return self.phase
 
-    def send(self, data, phase=None):
-        if phase == None:
-            phase = self.phase
+    def send(self, data):
         logging.info(data)
         data = data.encode('utf-8')
-        self.publisher_downstream.publish(self.topic_path_downstream, data=data, phase=phase)
+        self.publisher_downstream.publish(self.topic_path_downstream, data=data, phase=self.phase)
 
     def wait_for_response(self, num_messages = 1):
         for i in range(0, self.testLen):
@@ -62,12 +60,10 @@ class BaseTest(unittest.TestCase):
         self.send(data, phase)
         self.wait_for_response()
 
-    def start_node_agent_pair(self, seeders=config.CONFIG['no_seeders'], phase=None):
-        if phase == None:
-            phase = self.phase
+    def start_node_agent_pair(self, seeders=config.CONFIG['no_seeders']):
         docker = Docker()
         docker.stop('agent_' + str(self.agents))
-        cmd = 'docker run --network=devnet --name agent_' + str(self.agents) + ' -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs' + str(self.agents) + ':/opt/logs -v /root/spacemesh/devnet/cnf' + str(self.agents) + ':/opt/cnf/ -e SUBSCRIPTION_NAME_DOWNSTREAM=devnet_tests_agent_' + str(self.agents) + ' -e PHASE=' + phase + ' -e NODE=' + str(self.agents) + ' -e SEEDERS=' + seeders + ' spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py'
+        cmd = 'docker run --network=devnet --name agent_' + str(self.agents) + ' -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs' + str(self.agents) + ':/opt/logs -v /root/spacemesh/devnet/cnf' + str(self.agents) + ':/opt/cnf/ -e SUBSCRIPTION_NAME_DOWNSTREAM=devnet_tests_agent_' + str(self.agents) + ' -e PHASE=' + self.phase + ' -e NODE=' + str(self.agents) + ' -e SEEDERS=' + seeders + ' spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py'
         docker.start(cmd)
         self.agents += 1
 
