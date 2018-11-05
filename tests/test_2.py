@@ -39,7 +39,9 @@ class Test2(BaseTest):
             self.assertNotEqual(b'NULL', self.messages[i])
             self.assertLess(15, len(self.messages[i]))
 
-        self.send("END", phase_0)
-        self.send("END", phase_1)
+        self.phase = phase_0
+        self.send("END")
+        self.phase = phase_1
+        self.send("END")
 if __name__ == '__main__':
     unittest.main()
