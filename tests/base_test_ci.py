@@ -51,13 +51,15 @@ class BaseTest(unittest.TestCase):
 
     def wait_for_response(self, num_messages = 1):
         for i in range(0, self.testLen):
-#            if len(self.messages) == num_messages:
-#                logging.info(self.messages)
-#                return
+            logging.info(num_messages)
+            logging.info(self.messages)
+            if len(self.messages) == num_messages:
+                logging.info(self.messages)
+                return
             time.sleep(1)
 
     def send_and_wait(self, data, phase=None):
-        self.send(data, phase)
+        self.send(data)
         self.wait_for_response()
 
     def start_node_agent_pair(self, seeders=config.CONFIG['no_seeders']):
