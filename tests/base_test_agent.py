@@ -20,7 +20,7 @@ class BaseDevnetAgent:
         self.start_node()
         self.establish_links()
 
-    def establish_links():
+    def establish_links(self):
         project = config.CONFIG['project']
         topic_name_upstream = config.CONFIG['topic_name_upstream']
         self.publisher_upstream = pubsub_v1.PublisherClient()
