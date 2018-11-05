@@ -51,8 +51,6 @@ class BaseTest(unittest.TestCase):
 
     def wait_for_response(self, num_messages = 1):
         for i in range(0, self.testLen):
-            logging.info(len(self.messages))
-            logging.info(self.messages)
             if len(self.messages) == num_messages:
                 logging.info(self.messages)
                 break
