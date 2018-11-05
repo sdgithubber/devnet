@@ -11,7 +11,7 @@ class Test2(BaseTest):
     def test_sendId(self):
         phase_0 = self.create_phase("2.0")
         for i in range(0, 3):
-            self.start_node_agent_pair()
+            self.start_node_agent_pair(bootstrap='true')
         self.send('GET_NODE_ID')
         self.wait_for_response(3)
         
@@ -29,7 +29,7 @@ class Test2(BaseTest):
         logging.info(self.messages)
 
         for i in range(0, 3):
-            self.start_node_agent_pair(seeders=seeders_str)
+            self.start_node_agent_pair(seeders=seeders_str, bootstrap='true')
         self.send('GET_NODE_ID')
         self.wait_for_response(3)
 

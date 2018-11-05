@@ -20,7 +20,7 @@ response-timeout = "2s"
 
 # Node Swarm Config
 [p2p.swarm]
-bootstrap = false
+bootstrap = BOOTSTRAP_VALUE
 bucketsize = 20 # Routing table bucket size
 rtalpha = 3 # Routing table alpha
 randcon = 2 # Number of random connections
