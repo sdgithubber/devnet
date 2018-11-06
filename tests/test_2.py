@@ -39,6 +39,7 @@ class Test2(BaseTest):
             self.assertNotEqual(b'NULL', self.messages[i])
             self.assertLess(15, len(self.messages[i]))
 
+        time.sleep(20)
         self.phase = phase_0
         self.send("END")
         self.phase = phase_1
