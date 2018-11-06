@@ -7,10 +7,13 @@ import unittest
 
 class Test0(BaseTest):
     def test_verifyUp(self):
-        self.start_node_agent_pair()
-        self.send_and_wait('SEND_UP')
-        
-        self.assertEqual(b'UP', self.message)
+        phase_0 = self.create_phase("0")
+        self.start_node_agent_pair(bootstrap='false')
+        self.send('SEND_UP')
+        self.wait_for_response(1)
+
+        self.assertEqual(1, len(self.messages))
+        self.assertEqual(b'UP', self.messages[0])
 
 if __name__ == '__main__':
     unittest.main()
