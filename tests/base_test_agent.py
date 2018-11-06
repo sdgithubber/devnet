@@ -91,7 +91,7 @@ class BaseDevnetAgent:
             logging.warning(e.__doc__ )
             return 'NULL'
 
-        logging.info('NodeId:' + node_id)
+        logging.info('NodeId:' + self.node_id)
         return 'node_' + self.node + ':' + str(self.node_port) + '/' + self.node_id
 
     def get_dht(self):
