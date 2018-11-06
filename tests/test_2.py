@@ -14,7 +14,7 @@ class Test2(BaseTest):
             self.start_node_agent_pair(bootstrap='true')
         self.send('GET_NODE_ID')
         self.wait_for_response(3)
-        
+
         self.assertEqual(3, len(self.messages))
         for i in range(0, 3):
             self.assertNotEqual(b'NULL', self.messages[i])
@@ -39,10 +39,18 @@ class Test2(BaseTest):
             self.assertNotEqual(b'NULL', self.messages[i])
             self.assertLess(15, len(self.messages[i]))
 
-        time.sleep(20)
+        self.messages = []
+        self.send('GET_DHT_SIZE')
+        self.wait_for_response(3)
+
+        self.assertEqual(3, len(self.messages))
+        for i in range(0, 3):
+            self.assertEqual(6, int(self.messages[i]))
+
         self.phase = phase_0
-        self.send("END")
+        self.send('END')
         self.phase = phase_1
-        self.send("END")
+        self.send('END')
+
 if __name__ == '__main__':
     unittest.main()
