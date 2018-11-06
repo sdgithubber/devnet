@@ -39,7 +39,12 @@ class Test2(BaseTest):
             self.assertNotEqual(b'NULL', self.messages[i])
             self.assertLess(15, len(self.messages[i]))
 
-        time.sleep(20)
+        self.messages = []
+        self.send('GET_DHT')
+        self.assertEqual(3, len(self.messages))
+        for i in range(0, 3):
+            self.assertEqual(6, self.messages[i])
+
         self.phase = phase_0
         self.send("END")
         self.phase = phase_1
