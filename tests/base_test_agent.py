@@ -14,6 +14,7 @@ class BaseDevnetAgent:
         logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
         self.endFlag = False
 
+        self.node_id = "NULL"
         self.node = os.environ['NODE']
         self.phase = os.environ['PHASE']
         self.node_port = config.CONFIG['node_port']
@@ -84,19 +85,19 @@ class BaseDevnetAgent:
 
     def get_node_id(self):
         try:
-            node_id = next(os.walk('/opt/logs'))[1][0]
+            self.node_id = next(os.walk('/opt/logs'))[1][0]
         except Exception as e:
             logging.warning('Error finding log folder')
             logging.warning(e.__doc__ )
             return 'NULL'
 
         logging.info('NodeId:' + node_id)
-        return 'node_' + self.node + ':' + str(self.node_port) + '/' + node_id
+        return 'node_' + self.node + ':' + str(self.node_port) + '/' + self.node_id
 
     def get_dht(self):
         pattern = re.compile(u'.*DHT State with (\d+)')
         for i in range(1, 60):
-            for line in open('/opt/logs/node.log', "r", encoding="utf-8"):
+            for line in open('/opt/logs/' + self.node_id '/node.log', "r", encoding="utf-8"):
                 results = pattern.match(line)
                 if results != None:
                     return results.group(1)
