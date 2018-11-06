@@ -49,7 +49,7 @@ class Test2(BaseTest):
         logging.info('Xy')
         self.assertEqual(3, len(self.messages))
         for i in range(0, 3):
-            self.assertEqual(6, self.messages[i])
+            self.assertEqual(6, int(self.messages[i]))
         logging.info('Xz')
         self.phase = phase_0
         self.send("END")
