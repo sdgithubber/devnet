@@ -40,7 +40,7 @@ class Test2(BaseTest):
             self.assertLess(15, len(self.messages[i]))
 
         self.messages = []
-        self.send('GET_DHT')
+        self.send('GET_DHT_SIZE')
         self.wait_for_response(3)
 
         self.assertEqual(3, len(self.messages))
