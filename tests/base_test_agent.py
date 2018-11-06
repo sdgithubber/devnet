@@ -79,7 +79,7 @@ class BaseDevnetAgent:
             time.sleep(1)
 
     def send(self, data):
-        logging.info("sent: " + data)
+        logging.info("sent: " + str(data))
         data = data.encode('utf-8')
         self.publisher_upstream.publish(self.topic_path_upstream, data=data, phase=self.phase)
 
