@@ -14,6 +14,7 @@ class BaseDevnetAgent:
         logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
         self.endFlag = False
 
+        self.dht_timeout = config.CONFIG['dht_timeout']
         self.node_id = "NULL"
         self.node = os.environ['NODE']
         self.phase = os.environ['PHASE']
@@ -96,7 +97,7 @@ class BaseDevnetAgent:
 
     def get_dht(self):
         pattern = re.compile(u'.*DHT State with (\d+)')
-        for i in range(1, 60):
+        for i in range(0, self.dht_timeout):
             for line in open('/opt/logs/' + self.node_id + '/node.log', "r", encoding="utf-8"):
                 results = pattern.match(line)
                 if results != None:
