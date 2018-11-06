@@ -40,11 +40,13 @@ class Test2(BaseTest):
             self.assertLess(15, len(self.messages[i]))
 
         self.messages = []
+        logging.info('Xx')
         self.send('GET_DHT')
+        logging.info('Xy')
         self.assertEqual(3, len(self.messages))
         for i in range(0, 3):
             self.assertEqual(6, self.messages[i])
-
+        logging.info('Xz')
         self.phase = phase_0
         self.send("END")
         self.phase = phase_1
