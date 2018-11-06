@@ -97,7 +97,7 @@ class BaseDevnetAgent:
     def get_dht(self):
         pattern = re.compile(u'.*DHT State with (\d+)')
         for i in range(1, 60):
-            for line in open('/opt/logs/' + self.node_id '/node.log', "r", encoding="utf-8"):
+            for line in open('/opt/logs/' + self.node_id + '/node.log', "r", encoding="utf-8"):
                 results = pattern.match(line)
                 if results != None:
                     return results.group(1)
