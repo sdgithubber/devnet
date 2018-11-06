@@ -45,6 +45,7 @@ class Test2(BaseTest):
         self.messages = []
         logging.info('Xx')
         self.send('GET_DHT')
+        self.wait_for_response(3)
         logging.info('Xy')
         self.assertEqual(3, len(self.messages))
         for i in range(0, 3):
