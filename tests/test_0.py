@@ -13,7 +13,7 @@ class Test0(BaseTest):
         self.wait_for_response(1)
 
         self.assertEqual(1, len(self.messages))
-        self.assertEqual(b'UP', self.messages[0])
+        self.assertEqual('UP', self.messages[0])
 
 if __name__ == '__main__':
     unittest.main()
