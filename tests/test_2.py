@@ -13,12 +13,15 @@ class Test2(BaseTest):
         for i in range(0, 3):
             self.start_node_agent_pair(bootstrap='true')
         self.send('GET_NODE_ID')
+        logging.info('Xa')
         self.wait_for_response(3)
-        
+        logging.info('Xb')
+
         self.assertEqual(3, len(self.messages))
         for i in range(0, 3):
             self.assertNotEqual(b'NULL', self.messages[i])
             self.assertLess(15, len(self.messages[i]))
+        logging.info('Xc')
 
         #'["0.0.0.0:7517/j7qWfWaJRVp25ZsnCu9rJ4PmhigZBtesB4YmQHqqPvtR"]' like
         phase_1 = self.create_phase("2.1")
