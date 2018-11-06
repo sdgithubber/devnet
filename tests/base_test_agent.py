@@ -66,6 +66,8 @@ class BaseDevnetAgent:
             self.send('UP')
         elif 'GET_NODE_ID' == self.message:
             self.send(self.get_node_id())
+        elif 'GET_DHT' == self.message:
+            self.send(self.get_dht())
         elif 'SHUTDOWN_NODE' == self.message:
             self.docker.stop('node_' + self.node)
 
@@ -89,6 +91,15 @@ class BaseDevnetAgent:
 
         logging.info('NodeId:' + node_id)
         return 'node_' + self.node + ':' + str(self.node_port) + '/' + node_id
+
+    def get_dht(self):
+        pattern = re.compile(u'.*DHT State with (\d+)')
+        for i in range(1..60):
+            for line in open('/opt/logs/node.log', "r", encoding="utf-8"):
+                results = pattern.match(line)
+                if results != None:
+                    return results.group(1)
+        return 0
 
 if __name__ == '__main__':
     t = BaseDevnetAgent()
