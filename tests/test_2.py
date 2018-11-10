@@ -9,48 +9,20 @@ import logging
 
 class Test2(BaseTest):
     def test_sendId(self):
-        phase_0 = self.create_phase("2.0")
-        for i in range(0, 3):
-            self.start_node_agent_pair(bootstrap='true')
-        self.send('GET_NODE_ID')
-        self.wait_for_response(3)
+        seeders_nodes = 3
+        testers_nodes = 3
 
-        self.assertEqual(3, len(self.messages))
-        for i in range(0, 3):
-            self.assertNotEqual(b'NULL', self.messages[i])
-            self.assertLess(15, len(self.messages[i]))
+        messages = run_phase(self, nodes = 3, bootstrap = 'true', message = 'GET_NODE_ID'):
+        for i in range(0, seeders_nodes):
+            self.assertLess(15, len(messages[i]))
 
         #'["0.0.0.0:7517/j7qWfWaJRVp25ZsnCu9rJ4PmhigZBtesB4YmQHqqPvtR"]' like
-        phase_1 = self.create_phase("2.1")
         seeders_str = '\'["' + '","'.join(self.messages) + '"]\''
         logging.info(seeders_str)
-        logging.info(self.messages)
-        self.messages = []
-        logging.info(self.messages)
+        messages = run_phase(self, nodes = 3, bootstrap = 'true', seeders = seeders_str, message = 'GET_DHT_SIZE'):
 
-        for i in range(0, 3):
-            self.start_node_agent_pair(seeders=seeders_str, bootstrap='true')
-        self.send('GET_NODE_ID')
-        self.wait_for_response(3)
-
-        logging.info(self.messages)
-        self.assertEqual(3, len(self.messages))
-        for i in range(0, 3):
-            self.assertNotEqual(b'NULL', self.messages[i])
-            self.assertLess(15, len(self.messages[i]))
-
-        self.messages = []
-        self.send('GET_DHT_SIZE')
-        self.wait_for_response(3)
-
-        self.assertEqual(3, len(self.messages))
-        for i in range(0, 3):
-            self.assertEqual(6, int(self.messages[i]))
-
-        self.phase = phase_0
-        self.send('END')
-        self.phase = phase_1
-        self.send('END')
+        for i in range(0, testers_nodes):
+            self.assertEqual(seeders_nodes + testers_nodes, int(messages[i]))
 
 if __name__ == '__main__':
     unittest.main()

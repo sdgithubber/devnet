@@ -13,7 +13,8 @@ class BaseTest(unittest.TestCase):
     def setUp(self):
         logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 
-        self.create_phase()
+        self.phases = []
+        self.current_phase = 0
         self.endFlag = False
         self.testLen = 30
         self.message = b'NULL'
@@ -31,7 +32,9 @@ class BaseTest(unittest.TestCase):
         self.messages = []
 
     def tearDown(self):
-        self.send('END')
+        for self.phase in self.phases
+            self.send('END')
+
 
     def callback(self, message):
         if self.phase != message.attributes['phase']:
@@ -42,9 +45,11 @@ class BaseTest(unittest.TestCase):
 
     def create_phase(self, phase = ""):
         self.phase = 'phase_' + str(phase) + '_' + str(calendar.timegm(time.gmtime()))
+        self.phases.append(self.phase)
         return self.phase
 
     def send(self, data):
+        self.messages = []
         logging.info(data)
         data = data.encode('utf-8')
         self.publisher_downstream.publish(self.topic_path_downstream, data=data, phase=self.phase)
@@ -66,6 +71,16 @@ class BaseTest(unittest.TestCase):
         cmd = 'docker run --network=devnet --name agent_' + str(self.agents) + ' -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs' + str(self.agents) + ':/opt/logs -v /root/spacemesh/devnet/cnf' + str(self.agents) + ':/opt/cnf/ -e SUBSCRIPTION_NAME_DOWNSTREAM=devnet_tests_agent_' + str(self.agents) + ' -e PHASE=' + self.phase + ' -e BOOTSTRAP=' + bootstrap +' -e NODE=' + str(self.agents) + ' -e SEEDERS=' + seeders + ' spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py'
         docker.start(cmd)
         self.agents += 1
+
+    def run_phase(self, nodes = 1, seeders=config.CONFIG['no_seeders'], bootstrap = 'false', message = ''):
+        self.create_phase(self.current_phase++)
+        for i in range(0, nodes):
+            self.start_node_agent_pair(seeders = seeders, bootstrap = bootstrap)
+        self.send(message)
+        self.wait_for_response(nodes)
+        self.assertEqual(nodes, len(self.messages))
+
+        return self.messages
 
 if __name__ == '__main__':
     unittest.main()
