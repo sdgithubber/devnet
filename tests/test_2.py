@@ -12,14 +12,14 @@ class Test2(BaseTest):
         seeders_nodes = 3
         testers_nodes = 3
 
-        messages = self.run_phase(self, nodes = 3, bootstrap = 'true', message = 'GET_NODE_ID')
+        messages = self.run_phase(nodes = 3, bootstrap = 'true', message = 'GET_NODE_ID')
         for i in range(0, seeders_nodes):
             self.assertLess(15, len(messages[i]))
 
         #'["0.0.0.0:7517/j7qWfWaJRVp25ZsnCu9rJ4PmhigZBtesB4YmQHqqPvtR"]' like
         seeders_str = '\'["' + '","'.join(self.messages) + '"]\''
         logging.info(seeders_str)
-        messages = self.run_phase(self, nodes = 3, bootstrap = 'true', seeders = seeders_str, message = 'GET_DHT_SIZE')
+        messages = self.run_phase(nodes = 3, bootstrap = 'true', seeders = seeders_str, message = 'GET_DHT_SIZE')
 
         for i in range(0, testers_nodes):
             self.assertEqual(seeders_nodes + testers_nodes, int(messages[i]))
