@@ -14,7 +14,6 @@ class BaseTest(unittest.TestCase):
         logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 
         self.phases = []
-        self.current_phase = 0
         self.endFlag = False
         self.testLen = 30
         self.message = b'NULL'
@@ -72,7 +71,7 @@ class BaseTest(unittest.TestCase):
         self.agents += 1
 
     def run_phase(self, nodes = 1, seeders=config.CONFIG['no_seeders'], bootstrap = 'false', message = ''):
-        self.create_phase(self.current_phase++)
+        self.create_phase(len(self.phases))
         for i in range(0, nodes):
             self.start_node_agent_pair(seeders = seeders, bootstrap = bootstrap)
         self.send(message)
