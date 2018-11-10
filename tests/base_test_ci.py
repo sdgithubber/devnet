@@ -70,7 +70,7 @@ class BaseTest(unittest.TestCase):
         docker.start(cmd)
         self.agents += 1
 
-    def run_phase(self, nodes = 1, seeders=config.CONFIG['no_seeders'], bootstrap = 'false', message = ''):
+    def run_phase(self, nodes=1, seeders=config.CONFIG['no_seeders'], bootstrap='false', message=''):
         self.create_phase(len(self.phases))
         for i in range(0, nodes):
             self.start_node_agent_pair(seeders = seeders, bootstrap = bootstrap)
