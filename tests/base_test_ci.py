@@ -32,9 +32,8 @@ class BaseTest(unittest.TestCase):
         self.messages = []
 
     def tearDown(self):
-        for self.phase in self.phases
+        for self.phase in self.phases:
             self.send('END')
-
 
     def callback(self, message):
         if self.phase != message.attributes['phase']:
