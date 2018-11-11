@@ -1,4 +1,5 @@
 from dockers import Docker
+from nodes import Nodes
 import config
 import os
 import time
@@ -13,7 +14,7 @@ class BaseTest(unittest.TestCase):
     def setUp(self):
         logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 
-        self.nodes_list = []
+        self.nodes_list = Nodes()
         self.phases = []
         self.endFlag = False
         self.testLen = 60
