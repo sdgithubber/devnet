@@ -13,9 +13,10 @@ class BaseTest(unittest.TestCase):
     def setUp(self):
         logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 
+        self.nodes_list = []
         self.phases = []
         self.endFlag = False
-        self.testLen = 30
+        self.testLen = 60
         self.message = b'NULL'
         project = config.CONFIG['project']
         subscription_name_upstream = config.CONFIG['subscription_name_upstream']
@@ -59,9 +60,11 @@ class BaseTest(unittest.TestCase):
                 break
             time.sleep(1)
 
-    def send_and_wait(self, data):
+    def send_and_wait(self, data, nodes):
         self.send(data)
-        self.wait_for_response()
+        self.wait_for_response(nodes)
+        self.assertEqual(nodes, len(self.messages))
+        return self.messages
 
     def start_node_agent_pair(self, seeders=config.CONFIG['no_seeders'], bootstrap = 'false'):
         docker = Docker()
@@ -74,10 +77,8 @@ class BaseTest(unittest.TestCase):
         self.create_phase(len(self.phases))
         for i in range(0, nodes):
             self.start_node_agent_pair(seeders = seeders, bootstrap = bootstrap)
-        self.send(message)
-        self.wait_for_response(nodes)
-        self.assertEqual(nodes, len(self.messages))
-
+        self.send_and_wait('GET_NODE_ID', nodes)
+        self.nodes_list += self.messages
         return self.messages
 
 if __name__ == '__main__':
