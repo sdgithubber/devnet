@@ -16,7 +16,7 @@ class BaseTest(unittest.TestCase):
         self.nodes_list = []
         self.phases = []
         self.endFlag = False
-        self.testLen = 30
+        self.testLen = 60
         self.message = b'NULL'
         project = config.CONFIG['project']
         subscription_name_upstream = config.CONFIG['subscription_name_upstream']
