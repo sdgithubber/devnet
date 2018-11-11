@@ -7,11 +7,8 @@ import unittest
 
 class Test1(BaseTest):
     def test_sendId(self):
-        self.start_node_agent_pair()
-        self.send_and_wait('GET_NODE_ID')
-
-        self.assertNotEqual(b'NULL', self.message)
-        self.assertLess(5, len(self.message))
+        messages = self.run_phase(nodes = 1, bootstrap = 'false', message = 'GET_NODE_ID')
+        self.assertLess(15, len(messages[0]))
 
 if __name__ == '__main__':
     unittest.main()

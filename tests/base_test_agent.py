@@ -70,7 +70,7 @@ class BaseDevnetAgent:
         elif 'GET_NODE_ID' == self.message:
             self.send(self.get_node_id())
         elif 'GET_DHT_SIZE' == self.message:
-            self.send(self.get_dht_size())
+            self.send(str(self.get_dht_size()))
         elif 'SHUTDOWN_NODE' == self.message:
             self.docker.stop('node_' + self.node)
 
