@@ -20,7 +20,7 @@ class Test2(BaseTest):
         seeders_str = '\'["' + '","'.join(self.messages) + '"]\''
         logging.info(seeders_str)
         self.run_phase(nodes = testers_nodes, bootstrap = 'true', seeders = seeders_str)
-        messages = self.send_and_wait('GET_DHT_SIZE', testers_nodes):
+        messages = self.send_and_wait('GET_DHT_SIZE', testers_nodes)
 
         for i in range(0, testers_nodes):
             self.assertEqual(seeders_nodes + testers_nodes, int(messages[i]))
