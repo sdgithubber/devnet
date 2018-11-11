@@ -59,6 +59,7 @@ class BaseTest(unittest.TestCase):
                 logging.info(self.messages)
                 break
             time.sleep(1)
+        time.sleep(10)
 
     def send_and_wait(self, data):
         self.send(data)
