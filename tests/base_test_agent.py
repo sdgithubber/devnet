@@ -54,7 +54,8 @@ class BaseDevnetAgent:
 
     def callback(self, message):
         logging.info(message)
-        self.message = "".join(map(chr, message.data))
+        self.message = message.attributes['msg']
+        self.data = "".join(map(chr, message.data))
         message.ack()
         logging.info(message.attributes['phase'])
         if self.phase != message.attributes['phase']:
