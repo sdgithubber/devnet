@@ -13,12 +13,13 @@ class Nodes():
         return self    
 
     def get_nodes(self, num):
+        if num < len(self.nodes):
+            return None
+
         tmp = self.nodes
         selected_nodes = []
         for i in range(0, num):
-            if len(tmp) == 0:
-                 break
             select = random.randint(0, len(tmp))
             selected_nodes.append(tmp[select])
-            tmp.remove(select)
+            del tmp[select]
         return selected_nodes
