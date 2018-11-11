@@ -12,7 +12,7 @@ class Test2(BaseTest):
         seeders_nodes = 3
         testers_nodes = 3
 
-        messages = self.run_phase(nodes = 3, bootstrap = 'true', message = 'GET_NODE_ID')
+        messages = self.run_phase(nodes = 3, bootstrap = 'true')
         for i in range(0, seeders_nodes):
             self.assertLess(15, len(messages[i]))
 

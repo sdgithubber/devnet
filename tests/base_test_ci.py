@@ -13,6 +13,7 @@ class BaseTest(unittest.TestCase):
     def setUp(self):
         logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 
+        self.nodes_list = []
         self.phases = []
         self.endFlag = False
         self.testLen = 30
@@ -77,6 +78,12 @@ class BaseTest(unittest.TestCase):
         self.send(message)
         self.wait_for_response(nodes)
         self.assertEqual(nodes, len(self.messages))
+        self.nodes_list += self.messages
+
+        if message != '':
+            self.send(message)
+            self.wait_for_response(nodes)
+            self.assertEqual(nodes, len(self.messages))
 
         return self.messages
 
