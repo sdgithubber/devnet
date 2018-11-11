@@ -75,7 +75,7 @@ class BaseTest(unittest.TestCase):
         self.create_phase(len(self.phases))
         for i in range(0, nodes):
             self.start_node_agent_pair(seeders = seeders, bootstrap = bootstrap)
-        self.send(message)
+        self.send('GET_NODE_ID')
         self.wait_for_response(nodes)
         self.assertEqual(nodes, len(self.messages))
         self.nodes_list += self.messages
