@@ -11,6 +11,7 @@ class Test2(BaseTest):
     def test_sendId(self):
         seeders_nodes = 3
         testers_nodes = 3
+        randcon = seeders_nodes + testers_nodes - 1
 
         messages = self.run_phase(nodes = seeders_nodes, bootstrap = 'true')
         for i in range(0, seeders_nodes):
@@ -19,11 +20,11 @@ class Test2(BaseTest):
         #'["0.0.0.0:7517/j7qWfWaJRVp25ZsnCu9rJ4PmhigZBtesB4YmQHqqPvtR"]' like
         seeders_str = '\'["' + '","'.join(self.messages) + '"]\''
         logging.info(seeders_str)
-        self.run_phase(nodes = testers_nodes, bootstrap = 'true', seeders = seeders_str)
+        self.run_phase(nodes = testers_nodes, bootstrap = 'true', randcon = randcon, seeders = seeders_str)
         messages = self.send_and_wait('GET_DHT_SIZE', testers_nodes)
 
         for i in range(0, testers_nodes):
-            self.assertEqual(seeders_nodes + testers_nodes, int(messages[i]))
+            self.assertLess(randcon, int(messages[i]))
 
 if __name__ == '__main__':
     unittest.main()

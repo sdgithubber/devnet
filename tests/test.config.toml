@@ -24,7 +24,7 @@ gossip = true
 bootstrap = BOOTSTRAP_VALUE
 bucketsize = 20 # Routing table bucket size. recommended higher for bootstrap node
 rtalpha = 4 # Routing table alpha
-randcon = 5 # Number of random connections (neighbors for gossip). increase on bigger networks decrease for small
+randcon = RANDCON # Number of random connections (neighbors for gossip). increase on bigger networks decrease for small
 BOOT_NODES
 
 # API Config

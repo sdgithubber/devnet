@@ -35,19 +35,19 @@ class BaseDevnetAgent:
 
     def start_node(self):
         logging.info('seeders:' + os.environ['SEEDERS'])
-        self.modify_seeders(os.environ['SEEDERS'], os.environ['BOOTSTRAP'])
+        self.modify_seeders(os.environ['SEEDERS'], os.environ['BOOTSTRAP'], os.environ['RANDCON'])
         self.docker.stop('node_' + self.node)
         self.docker.start('docker run --network=devnet --name node_' + self.node + ' -p ' + str(self.node_port + int(self.node)) + ':' + str(self.node_port) + ' -v /root/spacemesh/devnet/logs' + self.node + ':/root/.spacemesh/nodes/ -v /root/spacemesh/devnet/cnf' + self.node + '/test.config.toml:/root/config.toml spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh --config=/root/config.toml > /root/spacemesh/devnet/logs' + self.node + '/node.log')
 
         while self.get_node_id() == 'NULL':
             time.sleep(1)
 
-    def modify_seeders(self, seeders, bootstrap):
+    def modify_seeders(self, seeders, bootstrap, randcon):
         file_name = "/opt/basecnf/test.config.toml"
         out_file_name = "/opt/cnf/test.config.toml"
 
         with open(file_name) as f:
-            new_config = f.read().replace('BOOT_NODES', 'bootnodes = ' + seeders[1:-1]).replace('BOOTSTRAP_VALUE', bootstrap)
+            new_config = f.read().replace('BOOT_NODES', 'bootnodes = ' + seeders[1:-1]).replace('BOOTSTRAP_VALUE', bootstrap).replace('RANDCON', randcon)
 
         with open(out_file_name, "w") as f:
             f.write(new_config)
