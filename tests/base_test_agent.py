@@ -102,6 +102,7 @@ class BaseDevnetAgent:
                 results = pattern.match(line)
                 if results != None:
                     return results.group(1)
+            time.sleep(1)
         return 0
 
 if __name__ == '__main__':
