@@ -48,12 +48,12 @@ class BaseTest(unittest.TestCase):
         self.phases.append(self.phase)
         return self.phase
 
-    def send(self, msg, data = 'NULL'):
+    def send(self, msg, data = 'NULL', target_node = None):
         self.messages = []
         logging.info(msg)
         logging.info(data)
         data = data.encode('utf-8')
-        self.publisher_downstream.publish(self.topic_path_downstream, data=data, phase=self.phase, msg=msg)
+        self.publisher_downstream.publish(self.topic_path_downstream, data=data, phase=self.phase, msg=msg, node=target_node)
 
     def wait_for_response(self, num_messages = 1):
         for i in range(0, self.testLen):
@@ -66,6 +66,12 @@ class BaseTest(unittest.TestCase):
         self.send(msg, data)
         self.wait_for_response(nodes)
         self.assertEqual(nodes, len(self.messages))
+        return self.messages
+
+    def send_to_node(self, msg, node, data = 'NULL', expected_msgs = 1)
+        self.send(msg, data)
+        self.wait_for_response(expected_msgs)
+        self.assertEqual(expected_msgs, len(self.messages))
         return self.messages
 
     def start_node_agent_pair(self, seeders=config.CONFIG['no_seeders'], bootstrap = 'false'):
