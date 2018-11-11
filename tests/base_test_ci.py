@@ -49,6 +49,7 @@ class BaseTest(unittest.TestCase):
 
     def send(self, msg, data = 'NULL'):
         self.messages = []
+        logging.info(msg)
         logging.info(data)
         data = data.encode('utf-8')
         self.publisher_downstream.publish(self.topic_path_downstream, data=data, phase=self.phase, msg=msg)
