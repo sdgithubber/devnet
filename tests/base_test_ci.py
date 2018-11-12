@@ -9,6 +9,15 @@ import spur
 import logging
 from logging import Logger
 
+class Publisher():
+    def enable(self, project):
+        topic_name_downstream = config.CONFIG['topic_name_downstream']
+        self.publisher_downstream = pubsub_v1.PublisherClient()
+        self.topic_path_downstream = self.publisher_downstream.topic_path(project, topic_name_downstream)
+
+    def publish(self, **kwargs):
+        self.publisher_downstream.publish(self.topic_path_downstream, **kwargs)
+    
 class BaseTest(unittest.TestCase):
     def setUp(self):
         logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
@@ -21,7 +30,8 @@ class BaseTest(unittest.TestCase):
 
         self.project = config.CONFIG['project']
         self.subscribe()
-        self.enable_publish()
+        self.publihser = Publisher(self.project)
+        self.publihser.enable()
 
         self.agents = 0
         self.messages = []
@@ -35,14 +45,6 @@ class BaseTest(unittest.TestCase):
         self.subscriber_upstream = pubsub_v1.SubscriberClient()
         self.subscription_path_upstream = self.subscriber_upstream.subscription_path(self.project, subscription_name_upstream)
         self.subscriber_upstream.subscribe(self.subscription_path_upstream, callback=self.callback)
-
-    def enable_publish(self):
-        topic_name_downstream = config.CONFIG['topic_name_downstream']
-        self.publisher_downstream = pubsub_v1.PublisherClient()
-        self.topic_path_downstream = self.publisher_downstream.topic_path(self.project, topic_name_downstream)
-
-    def publish(self, **kwargs):
-        self.publisher_downstream.publish(self.topic_path_downstream, **kwargs)
 
     def callback(self, message):
         if self.phase != message.attributes['phase']:
