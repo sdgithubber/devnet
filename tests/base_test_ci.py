@@ -36,7 +36,7 @@ class BaseTest(unittest.TestCase):
         self.subscription_path_upstream = self.subscriber_upstream.subscription_path(self.project, subscription_name_upstream)
         self.subscriber_upstream.subscribe(self.subscription_path_upstream, callback=self.callback)
 
-    def downstream(self):
+    def enable_publish(self):
         topic_name_downstream = config.CONFIG['topic_name_downstream']
         self.publisher_downstream = pubsub_v1.PublisherClient()
         self.topic_path_downstream = self.publisher_downstream.topic_path(self.project, topic_name_downstream)
