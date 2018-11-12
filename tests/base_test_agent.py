@@ -29,7 +29,7 @@ class BaseDevnetAgent:
         self.down_subscriber = Subscriber()
         self.down_subscriber.subscribe(self.project, config.CONFIG['subscription_name_downstream'], self.callback)
         self.up_publisher = Publisher()
-        self.up_publisher.enable(self.project, config.CONFIG['topic_name_upstreastream'])
+        self.up_publisher.enable(self.project, config.CONFIG['topic_name_upstream'])
 
     def start_node(self):
         logging.info('seeders:' + os.environ['SEEDERS'])
