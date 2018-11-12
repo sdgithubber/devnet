@@ -17,7 +17,15 @@ class Publisher():
 
     def publish(self, **kwargs):
         self.publisher_downstream.publish(self.topic_path_downstream, **kwargs)
-    
+
+class Subscriber():
+    def subscribe(self):
+        subscription_name_upstream = config.CONFIG['subscription_name_upstream']
+        self.subscriber_upstream = pubsub_v1.SubscriberClient()
+        self.subscription_path_upstream = self.subscriber_upstream.subscription_path(self.project, subscription_name_upstream)
+        self.subscriber_upstream.subscribe(self.subscription_path_upstream, callback=self.callback)
+
+
 class BaseTest(unittest.TestCase):
     def setUp(self):
         logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
@@ -29,9 +37,10 @@ class BaseTest(unittest.TestCase):
         self.message = b'NULL'
 
         self.project = config.CONFIG['project']
-        self.subscribe()
-        self.publisher = Publisher()
-        self.publisher.enable(self.project)
+        self.up_subscriber = Subscribe()
+        self.up_subscriber.subscribe()
+        self.down_publisher = Publisher()
+        self.down_publisher.enable(self.project)
 
         self.agents = 0
         self.messages = []
@@ -39,12 +48,6 @@ class BaseTest(unittest.TestCase):
     def tearDown(self):
         for self.phase in self.phases:
             self.send('END')
-
-    def subscribe(self):
-        subscription_name_upstream = config.CONFIG['subscription_name_upstream']
-        self.subscriber_upstream = pubsub_v1.SubscriberClient()
-        self.subscription_path_upstream = self.subscriber_upstream.subscription_path(self.project, subscription_name_upstream)
-        self.subscriber_upstream.subscribe(self.subscription_path_upstream, callback=self.callback)
 
     def callback(self, message):
         if self.phase != message.attributes['phase']:
@@ -62,7 +65,7 @@ class BaseTest(unittest.TestCase):
         self.messages = []
         logging.info(data)
         data = data.encode('utf-8')
-        self.publisher.publish(data=data, phase=self.phase)
+        self.down_publisher.publish(data=data, phase=self.phase)
 
     def wait_for_response(self, num_messages = 1):
         for i in range(0, self.testLen):
