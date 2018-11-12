@@ -1,7 +1,6 @@
 import config
 import random
 import calendar
-import sys
 from google.cloud import pubsub_v1
 import logging
 from logging import Logger
@@ -20,7 +19,7 @@ class Subscriber():
         topic_path = self.publisher.topic_path(project, topic_name)
 
         self.subscriber = pubsub_v1.SubscriberClient()
-        subscription_name = 'devnet_sub_' + str(random.randint(0, sys.maxint)) + ' ' + str(calendar.timegm(time.gmtime()))
+        subscription_name = 'devnet_sub_' + str(random.randint(0, 9999999999)) + ' ' + str(calendar.timegm(time.gmtime()))
         self.subscription_path = self.subscriber.subscription_path(project, subscription_name)
         subscription = self.subscriber.create_subscription(self.subscription_path, topic_path)
         self.subscriber.subscribe(self.subscription_path, callback=callback)
