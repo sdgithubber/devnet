@@ -1,5 +1,6 @@
 import config
 from dockers import Docker
+from topics import Publisher, Subscriber
 from google.cloud import pubsub_v1
 import time
 import datetime
@@ -24,14 +25,11 @@ class BaseDevnetAgent:
         self.establish_links()
 
     def establish_links(self):
-        project = config.CONFIG['project']
-        topic_name_upstream = config.CONFIG['topic_name_upstream']
-        self.publisher_upstream = pubsub_v1.PublisherClient()
-        self.topic_path_upstream = self.publisher_upstream.topic_path(project, topic_name_upstream)
-
-        subscription_name_downstream = os.environ['SUBSCRIPTION_NAME_DOWNSTREAM']
-        self.subscriber_downstream = pubsub_v1.SubscriberClient()
-        self.subscription_path_downstream = self.subscriber_downstream.subscription_path(project, subscription_name_downstream)
+        self.project = config.CONFIG['project']
+        self.down_subscriber = Subscriber()
+        self.down_subscriber.subscribe(self.project, config.CONFIG['subscription_name_downstream'], self.callback)
+        self.up_publisher = Publisher()
+        self.up_publisher.enable(self.project, config.CONFIG['topic_name_upstreastream'])
 
     def start_node(self):
         logging.info('seeders:' + os.environ['SEEDERS'])
@@ -75,14 +73,13 @@ class BaseDevnetAgent:
             self.docker.stop('node_' + self.node)
 
     def act_on_request(self):
-        self.subscriber_downstream.subscribe(self.subscription_path_downstream, callback=self.callback)
         while not self.endFlag:
             time.sleep(1)
 
     def send(self, data):
         logging.info("sent: " + str(data))
         data = data.encode('utf-8')
-        self.publisher_upstream.publish(self.topic_path_upstream, data=data, phase=self.phase)
+        self.up_publisher.publish(data=data, phase=self.phase)
 
     def get_node_id(self):
         try:
