@@ -42,7 +42,7 @@ class BaseTest(unittest.TestCase):
         self.topic_path_downstream = self.publisher_downstream.topic_path(self.project, topic_name_downstream)
 
     def publish(self, **kwargs):
-        self.publisher_downstream.publish(self.topic_path_downstream, kwargs)
+        self.publisher_downstream.publish(self.topic_path_downstream, **kwargs)
 
     def callback(self, message):
         if self.phase != message.attributes['phase']:
