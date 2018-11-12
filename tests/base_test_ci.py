@@ -41,6 +41,9 @@ class BaseTest(unittest.TestCase):
         self.publisher_downstream = pubsub_v1.PublisherClient()
         self.topic_path_downstream = self.publisher_downstream.topic_path(self.project, topic_name_downstream)
 
+    def publish(self, **kwargs):
+        self.publisher_downstream.publish(self.topic_path_downstream, kwargs)
+
     def callback(self, message):
         if self.phase != message.attributes['phase']:
             return
@@ -57,7 +60,7 @@ class BaseTest(unittest.TestCase):
         self.messages = []
         logging.info(data)
         data = data.encode('utf-8')
-        self.publisher_downstream.publish(self.topic_path_downstream, data=data, phase=self.phase)
+        self.publish(data=data, phase=self.phase)
 
     def wait_for_response(self, num_messages = 1):
         for i in range(0, self.testLen):
