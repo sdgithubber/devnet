@@ -96,7 +96,7 @@ class BaseDevnetAgent:
         return 'node_' + self.node + ':' + str(self.node_port) + '/' + self.node_id
 
     def get_dht_size(self):
-        pattern = re.compile(u'.*DHT State with (\d+)')
+        pattern = re.compile(u'.*DHT Bootstrapped with (\d+)')
         for i in range(0, self.dht_timeout):
             for line in open('/opt/logs/' + self.node_id + '/node.log', "r", encoding="utf-8"):
                 results = pattern.match(line)
