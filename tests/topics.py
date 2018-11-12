@@ -24,5 +24,5 @@ class Subscriber():
         subscription = self.subscriber.create_subscription(self.subscription_path, topic_path)
         self.subscriber.subscribe(self.subscription_path, callback=callback)
 
-    def __del__(self):
+    def delete(self):
         self.subscriber.delete_subscription(self.subscription_path)
