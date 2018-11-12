@@ -12,7 +12,15 @@ class Publisher():
         self.publisher.publish(self.topic_path, **kwargs)
 
 class Subscriber():
-    def subscribe(self, project, subscription_name, callback):
+    def subscribe(self, project, topic_name, callback):
+        self.publisher = pubsub_v1.PublisherClient()
+        topic_path = self.publisher.topic_path(project, topic_name)
+
         self.subscriber = pubsub_v1.SubscriberClient()
+        subscription_name = 'devnet_sub_' + str(random.randint(0, sys.maxint)) + ' ' + str(calendar.timegm(time.gmtime()))
         self.subscription_path = self.subscriber.subscription_path(project, subscription_name)
+        subscription = self.subscriber.create_subscription(self.subscription_path, topic_path)
         self.subscriber.subscribe(self.subscription_path, callback=callback)
+
+    def __del__(self):
+        self.subscriber.delete_subscription(self.subscription_path)

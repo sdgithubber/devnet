@@ -27,7 +27,7 @@ class BaseDevnetAgent:
     def establish_links(self):
         self.project = config.CONFIG['project']
         self.down_subscriber = Subscriber()
-        self.down_subscriber.subscribe(self.project, os.environ['SUBSCRIPTION_NAME_DOWNSTREAM']
+        self.down_subscriber.subscribe(self.project, config.CONFIG['topic_name_downstream']
 , self.callback)
         self.up_publisher = Publisher()
         self.up_publisher.enable(self.project, config.CONFIG['topic_name_upstream'])

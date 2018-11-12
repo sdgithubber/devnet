@@ -22,7 +22,7 @@ class BaseTest(unittest.TestCase):
 
         self.project = config.CONFIG['project']
         self.up_subscriber = Subscriber()
-        self.up_subscriber.subscribe(self.project, config.CONFIG['subscription_name_upstream'], self.callback)
+        self.up_subscriber.subscribe(self.project, config.CONFIG['topic_name_upstream'], self.callback)
         self.down_publisher = Publisher()
         self.down_publisher.enable(self.project, config.CONFIG['topic_name_downstream'])
 
