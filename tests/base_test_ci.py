@@ -10,13 +10,12 @@ import logging
 from logging import Logger
 
 class Publisher():
-    def enable(self, project):
-        topic_name_downstream = config.CONFIG['topic_name_downstream']
-        self.publisher_downstream = pubsub_v1.PublisherClient()
-        self.topic_path_downstream = self.publisher_downstream.topic_path(project, topic_name_downstream)
+    def enable(self, project, topic_name):
+        self.publisher = pubsub_v1.PublisherClient()
+        self.topic_path = self.publisher.topic_path(project, topic_name)
 
     def publish(self, **kwargs):
-        self.publisher_downstream.publish(self.topic_path_downstream, **kwargs)
+        self.publisher.publish(self.topic_path, **kwargs)
 
 class Subscriber():
     def subscribe(self, project, callback):
@@ -24,7 +23,6 @@ class Subscriber():
         self.subscriber_upstream = pubsub_v1.SubscriberClient()
         self.subscription_path_upstream = self.subscriber_upstream.subscription_path(project, subscription_name_upstream)
         self.subscriber_upstream.subscribe(self.subscription_path_upstream, callback=callback)
-
 
 class BaseTest(unittest.TestCase):
     def setUp(self):
@@ -40,7 +38,7 @@ class BaseTest(unittest.TestCase):
         self.up_subscriber = Subscriber()
         self.up_subscriber.subscribe(self.project, self.callback)
         self.down_publisher = Publisher()
-        self.down_publisher.enable(self.project)
+        self.down_publisher.enable(self.project, config.CONFIG['topic_name_downstream'])
 
         self.agents = 0
         self.messages = []
