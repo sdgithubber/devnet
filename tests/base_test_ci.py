@@ -37,7 +37,7 @@ class BaseTest(unittest.TestCase):
         self.message = b'NULL'
 
         self.project = config.CONFIG['project']
-        self.up_subscriber = Subscribe()
+        self.up_subscriber = Subscriber()
         self.up_subscriber.subscribe()
         self.down_publisher = Publisher()
         self.down_publisher.enable(self.project)
