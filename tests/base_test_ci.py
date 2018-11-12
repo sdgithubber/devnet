@@ -18,15 +18,10 @@ class BaseTest(unittest.TestCase):
         self.endFlag = False
         self.testLen = 60
         self.message = b'NULL'
-        project = config.CONFIG['project']
-        subscription_name_upstream = config.CONFIG['subscription_name_upstream']
-        self.subscriber_upstream = pubsub_v1.SubscriberClient()
-        self.subscription_path_upstream = self.subscriber_upstream.subscription_path(project, subscription_name_upstream)
-        self.subscriber_upstream.subscribe(self.subscription_path_upstream, callback=self.callback)
 
-        topic_name_downstream = config.CONFIG['topic_name_downstream']
-        self.publisher_downstream = pubsub_v1.PublisherClient()
-        self.topic_path_downstream = self.publisher_downstream.topic_path(project, topic_name_downstream)
+        self.project = config.CONFIG['project']
+        self.subscribe()
+        self.enable_publish()
 
         self.agents = 0
         self.messages = []
@@ -34,6 +29,17 @@ class BaseTest(unittest.TestCase):
     def tearDown(self):
         for self.phase in self.phases:
             self.send('END')
+
+    def subscribe(self):
+        subscription_name_upstream = config.CONFIG['subscription_name_upstream']
+        self.subscriber_upstream = pubsub_v1.SubscriberClient()
+        self.subscription_path_upstream = self.subscriber_upstream.subscription_path(self.project, subscription_name_upstream)
+        self.subscriber_upstream.subscribe(self.subscription_path_upstream, callback=self.callback)
+
+    def downstream(self):
+        topic_name_downstream = config.CONFIG['topic_name_downstream']
+        self.publisher_downstream = pubsub_v1.PublisherClient()
+        self.topic_path_downstream = self.publisher_downstream.topic_path(self.project, topic_name_downstream)
 
     def callback(self, message):
         if self.phase != message.attributes['phase']:
