@@ -30,8 +30,8 @@ class BaseTest(unittest.TestCase):
 
         self.project = config.CONFIG['project']
         self.subscribe()
-        self.publihser = Publisher(self.project)
-        self.publihser.enable()
+        self.publihser = Publisher()
+        self.publihser.enable(self.project)
 
         self.agents = 0
         self.messages = []
