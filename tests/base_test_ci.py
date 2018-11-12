@@ -19,11 +19,11 @@ class Publisher():
         self.publisher_downstream.publish(self.topic_path_downstream, **kwargs)
 
 class Subscriber():
-    def subscribe(self):
+    def subscribe(self, project, callback):
         subscription_name_upstream = config.CONFIG['subscription_name_upstream']
         self.subscriber_upstream = pubsub_v1.SubscriberClient()
-        self.subscription_path_upstream = self.subscriber_upstream.subscription_path(self.project, subscription_name_upstream)
-        self.subscriber_upstream.subscribe(self.subscription_path_upstream, callback=self.callback)
+        self.subscription_path_upstream = self.subscriber_upstream.subscription_path(project, subscription_name_upstream)
+        self.subscriber_upstream.subscribe(self.subscription_path_upstream, callback=callback)
 
 
 class BaseTest(unittest.TestCase):
@@ -38,7 +38,7 @@ class BaseTest(unittest.TestCase):
 
         self.project = config.CONFIG['project']
         self.up_subscriber = Subscriber()
-        self.up_subscriber.subscribe()
+        self.up_subscriber.subscribe(self.project, self.callback)
         self.down_publisher = Publisher()
         self.down_publisher.enable(self.project)
 
