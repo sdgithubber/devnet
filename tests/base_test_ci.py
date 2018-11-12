@@ -30,8 +30,8 @@ class BaseTest(unittest.TestCase):
 
         self.project = config.CONFIG['project']
         self.subscribe()
-        self.publihser = Publisher()
-        self.publihser.enable(self.project)
+        self.publisher = Publisher()
+        self.publisher.enable(self.project)
 
         self.agents = 0
         self.messages = []
@@ -62,7 +62,7 @@ class BaseTest(unittest.TestCase):
         self.messages = []
         logging.info(data)
         data = data.encode('utf-8')
-        self.publish(data=data, phase=self.phase)
+        self.publisher.publish(data=data, phase=self.phase)
 
     def wait_for_response(self, num_messages = 1):
         for i in range(0, self.testLen):
