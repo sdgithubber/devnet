@@ -35,19 +35,19 @@ class BaseDevnetAgent:
 
     def start_node(self):
         logging.info('seeders:' + os.environ['SEEDERS'])
-        self.modify_seeders(os.environ['SEEDERS'], os.environ['BOOTSTRAP'])
+        self.modify_seeders(os.environ['SEEDERS'], os.environ['BOOTSTRAP'], os.environ['RANDCON'])
         self.docker.stop('node_' + self.node)
         self.docker.start('docker run --network=devnet --name node_' + self.node + ' -p ' + str(self.node_port + int(self.node)) + ':' + str(self.node_port) + ' -v /root/spacemesh/devnet/logs' + self.node + ':/root/.spacemesh/nodes/ -v /root/spacemesh/devnet/cnf' + self.node + '/test.config.toml:/root/config.toml spacemesh/node:latest /go/src/github.com/spacemeshos/go-spacemesh/go-spacemesh --config=/root/config.toml > /root/spacemesh/devnet/logs' + self.node + '/node.log')
 
         while self.get_node_id() == 'NULL':
             time.sleep(1)
 
-    def modify_seeders(self, seeders, bootstrap):
+    def modify_seeders(self, seeders, bootstrap, randcon):
         file_name = "/opt/basecnf/test.config.toml"
         out_file_name = "/opt/cnf/test.config.toml"
 
         with open(file_name) as f:
-            new_config = f.read().replace('BOOT_NODES', 'bootnodes = ' + seeders[1:-1]).replace('BOOTSTRAP_VALUE', bootstrap)
+            new_config = f.read().replace('BOOT_NODES', 'bootnodes = ' + seeders[1:-1]).replace('BOOTSTRAP_VALUE', bootstrap).replace('RANDCON', randcon)
 
         with open(out_file_name, "w") as f:
             f.write(new_config)
@@ -96,12 +96,13 @@ class BaseDevnetAgent:
         return 'node_' + self.node + ':' + str(self.node_port) + '/' + self.node_id
 
     def get_dht_size(self):
-        pattern = re.compile(u'.*DHT State with (\d+)')
+        pattern = re.compile(u'.*DHT Bootstrapped with (\d+)')
         for i in range(0, self.dht_timeout):
             for line in open('/opt/logs/' + self.node_id + '/node.log', "r", encoding="utf-8"):
                 results = pattern.match(line)
                 if results != None:
                     return results.group(1)
+            time.sleep(1)
         return 0
 
 if __name__ == '__main__':

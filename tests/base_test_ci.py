@@ -66,17 +66,17 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(nodes, len(self.messages))
         return self.messages
 
-    def start_node_agent_pair(self, seeders=config.CONFIG['no_seeders'], bootstrap = 'false'):
+    def start_node_agent_pair(self, seeders=config.CONFIG['no_seeders'], bootstrap = 'false', randcon = 5):
         docker = Docker()
         docker.stop('agent_' + str(self.agents))
-        cmd = 'docker run --network=devnet --name agent_' + str(self.agents) + ' -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs' + str(self.agents) + ':/opt/logs -v /root/spacemesh/devnet/cnf' + str(self.agents) + ':/opt/cnf/ -e SUBSCRIPTION_NAME_DOWNSTREAM=devnet_tests_agent_' + str(self.agents) + ' -e PHASE=' + self.phase + ' -e BOOTSTRAP=' + bootstrap +' -e NODE=' + str(self.agents) + ' -e SEEDERS=' + seeders + ' spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py'
+        cmd = 'docker run --network=devnet --name agent_' + str(self.agents) + ' -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs' + str(self.agents) + ':/opt/logs -v /root/spacemesh/devnet/cnf' + str(self.agents) + ':/opt/cnf/ -e SUBSCRIPTION_NAME_DOWNSTREAM=devnet_tests_agent_' + str(self.agents) + ' -e PHASE=' + self.phase + ' -e BOOTSTRAP=' + bootstrap +' -e NODE=' + str(self.agents) + ' -e SEEDERS=' + seeders + ' -e RANDCON=' + str(randcon) + ' spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py'
         docker.start(cmd)
         self.agents += 1
 
-    def run_phase(self, nodes = 1, seeders=config.CONFIG['no_seeders'], bootstrap = 'false', message = ''):
+    def run_phase(self, nodes = 1, seeders=config.CONFIG['no_seeders'], bootstrap = 'false', randcon = 5, message = ''):
         self.create_phase(len(self.phases))
         for i in range(0, nodes):
-            self.start_node_agent_pair(seeders = seeders, bootstrap = bootstrap)
+            self.start_node_agent_pair(seeders = seeders, bootstrap = bootstrap, randcon = randcon)
         self.send_and_wait('GET_NODE_ID', nodes)
         self.nodes_list += self.messages
         return self.messages
