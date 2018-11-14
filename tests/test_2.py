@@ -24,7 +24,7 @@ class Test2(BaseTest):
         messages = self.send_and_wait('GET_DHT_SIZE', testers_nodes)
 
         for i in range(0, testers_nodes):
-            self.assertLess(randcon, int(messages[i]))
+            self.assertLessEqual(randcon, int(messages[i]))
 
 if __name__ == '__main__':
     unittest.main()
