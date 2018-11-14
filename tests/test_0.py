@@ -7,7 +7,8 @@ import unittest
 
 class Test0(BaseTest):
     def test_verifyUp(self):
-        messages = self.run_phase(nodes = 1, bootstrap = 'false', message = 'SEND_UP')
+        messages = self.run_phase(nodes = 1, bootstrap = 'false')
+        messages = self.send_and_wait('GET_DHT_SIZE', testers_nodes)
         self.assertEqual('UP', messages[0])
 
 if __name__ == '__main__':
