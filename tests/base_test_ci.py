@@ -21,10 +21,11 @@ class BaseTest(unittest.TestCase):
         self.message = b'NULL'
 
         self.project = config.CONFIG['project']
-        self.up_subscriber = Subscriber()
-        self.up_subscriber.subscribe(self.project, config.CONFIG['topic_name_upstream'], self.callback)
-        self.down_publisher = Publisher()
-        self.down_publisher.enable(self.project, config.CONFIG['topic_name_downstream'])
+        self.up_publisher = Publisher(self.project)
+        self.up_topic_path = self.up_publisher.create()
+        self.up_publisher.add_subscription().subscribe(self.callback)
+        self.down_publisher = Publisher(self.project)
+        self.down_publisher.create()
 
         self.agents = 0
         self.messages = []
@@ -32,7 +33,8 @@ class BaseTest(unittest.TestCase):
     def tearDown(self):
         for self.phase in self.phases:
             self.send('END')
-        self.up_subscriber.delete()
+        self.up_publisher.delete()
+        self.down_publisher.delete()
 
     def callback(self, message):
         if self.phase != message.attributes['phase']:
@@ -68,7 +70,8 @@ class BaseTest(unittest.TestCase):
     def start_node_agent_pair(self, seeders=config.CONFIG['no_seeders'], bootstrap = 'false', randcon = 5):
         docker = Docker()
         docker.stop('agent_' + str(self.agents))
-        cmd = 'docker run --network=devnet --name agent_' + str(self.agents) + ' -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs' + str(self.agents) + ':/opt/logs -v /root/spacemesh/devnet/cnf' + str(self.agents) + ':/opt/cnf/ -e SUBSCRIPTION_NAME_DOWNSTREAM=devnet_tests_agent_' + str(self.agents) + ' -e PHASE=' + self.phase + ' -e BOOTSTRAP=' + bootstrap +' -e NODE=' + str(self.agents) + ' -e SEEDERS=' + seeders + ' -e RANDCON=' + str(randcon) + ' spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py'
+        down_subscription = self.down_publisher.add_subscription()
+        cmd = 'docker run --network=devnet --name agent_' + str(self.agents) + ' -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs' + str(self.agents) + ':/opt/logs -v /root/spacemesh/devnet/cnf' + str(self.agents) + ':/opt/cnf/ -e SUBSCRIPTION_NAME_DOWNSTREAM=' + down_subscription + ' -e TOPIC_PATH_UPSTREAM=' + self.up_topic_path + ' -e PHASE=' + self.phase + ' -e BOOTSTRAP=' + bootstrap +' -e NODE=' + str(self.agents) + ' -e SEEDERS=' + seeders + ' -e RANDCON=' + str(randcon) + ' spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py'
         docker.start(cmd)
         self.agents += 1
 
