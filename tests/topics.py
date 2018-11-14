@@ -15,7 +15,7 @@ class Publisher():
         self.subscribers = []
         topic_name = 'devnet_topic_' + str(random.randint(0, 9999999999)) + '_' + str(calendar.timegm(time.gmtime()))
         self.topic_path = self.publisher.topic_path(self.project, topic_name)
-        publisher.create_topic(self.topic_path)
+        self.publisher.create_topic(self.topic_path)
         return self.topic_path
 
     def publish(self, **kwargs):
