@@ -61,7 +61,6 @@ class BaseDevnetAgent:
 
         if 'END' == self.message:
             self.docker.stop('node_' + self.node)
-            self.down_subscriber.delete()
             self.endFlag = True
         elif 'SEND_UP' == self.message:
             self.send('UP')
