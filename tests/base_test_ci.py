@@ -1,4 +1,5 @@
 from dockers import Docker
+from topics import Publisher, Subscriber
 import config
 import os
 import time
@@ -18,15 +19,13 @@ class BaseTest(unittest.TestCase):
         self.endFlag = False
         self.testLen = 60
         self.message = b'NULL'
-        project = config.CONFIG['project']
-        subscription_name_upstream = config.CONFIG['subscription_name_upstream']
-        self.subscriber_upstream = pubsub_v1.SubscriberClient()
-        self.subscription_path_upstream = self.subscriber_upstream.subscription_path(project, subscription_name_upstream)
-        self.subscriber_upstream.subscribe(self.subscription_path_upstream, callback=self.callback)
 
-        topic_name_downstream = config.CONFIG['topic_name_downstream']
-        self.publisher_downstream = pubsub_v1.PublisherClient()
-        self.topic_path_downstream = self.publisher_downstream.topic_path(project, topic_name_downstream)
+        self.project = config.CONFIG['project']
+        self.up_publisher = Publisher(self.project)
+        self.up_topic_path = self.up_publisher.create()
+        self.up_publisher.add_subscription().subscribe(self.callback)
+        self.down_publisher = Publisher(self.project)
+        self.down_publisher.create()
 
         self.agents = 0
         self.messages = []
@@ -34,6 +33,8 @@ class BaseTest(unittest.TestCase):
     def tearDown(self):
         for self.phase in self.phases:
             self.send('END')
+        self.up_publisher.delete()
+        self.down_publisher.delete()
 
     def callback(self, message):
         if self.phase != message.attributes['phase']:
@@ -51,7 +52,7 @@ class BaseTest(unittest.TestCase):
         self.messages = []
         logging.info(data)
         data = data.encode('utf-8')
-        self.publisher_downstream.publish(self.topic_path_downstream, data=data, phase=self.phase)
+        self.down_publisher.publish(data=data, phase=self.phase)
 
     def wait_for_response(self, num_messages = 1):
         for i in range(0, self.testLen):
@@ -69,7 +70,8 @@ class BaseTest(unittest.TestCase):
     def start_node_agent_pair(self, seeders=config.CONFIG['no_seeders'], bootstrap = 'false', randcon = 5):
         docker = Docker()
         docker.stop('agent_' + str(self.agents))
-        cmd = 'docker run --network=devnet --name agent_' + str(self.agents) + ' -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs' + str(self.agents) + ':/opt/logs -v /root/spacemesh/devnet/cnf' + str(self.agents) + ':/opt/cnf/ -e SUBSCRIPTION_NAME_DOWNSTREAM=devnet_tests_agent_' + str(self.agents) + ' -e PHASE=' + self.phase + ' -e BOOTSTRAP=' + bootstrap +' -e NODE=' + str(self.agents) + ' -e SEEDERS=' + seeders + ' -e RANDCON=' + str(randcon) + ' spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py'
+        down_subscriber = self.down_publisher.add_subscription()
+        cmd = 'docker run --network=devnet --name agent_' + str(self.agents) + ' -v /root/spacemesh/devnet/tests:/opt/devnet -v /root/spacemesh/devnet/logs' + str(self.agents) + ':/opt/logs -v /root/spacemesh/devnet/cnf' + str(self.agents) + ':/opt/cnf/ -e SUBSCRIPTION_PATH_DOWNSTREAM=' + down_subscriber.subscription_path + ' -e TOPIC_PATH_UPSTREAM=' + self.up_topic_path + ' -e PHASE=' + self.phase + ' -e BOOTSTRAP=' + bootstrap +' -e NODE=' + str(self.agents) + ' -e SEEDERS=' + seeders + ' -e RANDCON=' + str(randcon) + ' spacemesh/devnet_agent:latest python3 /opt/devnet/base_test_agent.py'
         docker.start(cmd)
         self.agents += 1
 
