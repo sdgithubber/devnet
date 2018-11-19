@@ -69,14 +69,14 @@ root@devnet-test-2:~#`
 Installation and configuration
 1. Create a new folder `mkdir -p /root/spacemesh/ && /root/spacemesh/`
 1. Clone the project: `git clone https://github.com/spacemeshos/devnet.git && cd devnet`
-`Cloning into 'devnet'...
+```Cloning into 'devnet'...
 remote: Enumerating objects: 102, done.
 remote: Counting objects: 100% (102/102), done.
 remote: Compressing objects: 100% (68/68), done.
 remote: Total 1713 (delta 68), reused 63 (delta 34), pack-reused 1611
 Receiving objects: 100% (1713/1713), 162.36 KiB | 0 bytes/s, done.
 Resolving deltas: 100% (1200/1200), done.
-Checking connectivity... done.`
+Checking connectivity... done.```
 
 1. Update the project configuration that can be found in tests/config.py to use the correct GCP project name, host, created user and password to the machine
 `CONFIG = {
