@@ -10,9 +10,9 @@ The following documentation assumes no prior knowledge on the setup and also sho
 
 ## Setting up an environment 
 How to setup the environment
-1. [Create a new ubuntu VM using GCP](https://cloud.google.com/compute/docs/instances/create-start-instance)
-1. Connect the created machine using `sudo docker run --rm -ti --volumes-from gcloud-config google/cloud-sdk gcloud compute --project "spacemesh-198810" ssh --zone "us-east4-c" "devnet-test-2"` where us-east4-c is the zone you created the the VM and the devnet-test-2 is the machine name you selected for.
-    ```WARNING: The public SSH key file for gcloud does not exist.
+* [Create a new ubuntu VM using GCP](https://cloud.google.com/compute/docs/instances/create-start-instance)
+* Connect the created machine using `sudo docker run --rm -ti --volumes-from gcloud-config google/cloud-sdk gcloud compute --project "spacemesh-198810" ssh --zone "us-east4-c" "devnet-test-2"` where us-east4-c is the zone you created the the VM and the devnet-test-2 is the machine name you selected for.
+```WARNING: The public SSH key file for gcloud does not exist.
 WARNING: The private SSH key file for gcloud does not exist.
 WARNING: You do not have an SSH key for gcloud.
 WARNING: SSH keygen will be executed to generate a key.
@@ -59,15 +59,15 @@ Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.15.0-1021-gcp x86_64)
 *** System restart required ***
 Last login: Wed Nov 14 22:42:16 2018 from 52.202.226.187
 root@devnet-test-2:~#```
-1. Create a local user on the machine: `sudo useradd test`
-1. Set password `sudo passwd test`
-1. Add the user to the docker group `sudo usermod -aG docker test`
-1. Install make `apt install make`
+* Create a local user on the machine: `sudo useradd test`
+* Set password `sudo passwd test`
+* Add the user to the docker group `sudo usermod -aG docker test`
+* Install make `apt install make`
 
 ## Installation and configuration
-1. Create a new folder `mkdir -p /root/spacemesh/ && /root/spacemesh/`
-1. Clone the project: `git clone https://github.com/spacemeshos/devnet.git && cd devnet`
-    ```Cloning into 'devnet'...
+* Create a new folder `mkdir -p /root/spacemesh/ && /root/spacemesh/`
+* Clone the project: `git clone https://github.com/spacemeshos/devnet.git && cd devnet`
+```Cloning into 'devnet'...
 remote: Enumerating objects: 102, done.
 remote: Counting objects: 100% (102/102), done.
 remote: Compressing objects: 100% (68/68), done.
@@ -76,7 +76,7 @@ Receiving objects: 100% (1713/1713), 162.36 KiB | 0 bytes/s, done.
 Resolving deltas: 100% (1200/1200), done.
 Checking connectivity... done.
 ```
-1. Update the project configuration that can be found in tests/config.py to use the correct GCP project name, host, created user and password to the machine
+* Update the project configuration that can be found in tests/config.py to use the correct GCP project name, host, created user and password to the machine
 ```CONFIG = {
     'project': 'spacemesh-198810',
     'host': 'HOST_IP',
@@ -87,8 +87,8 @@ Checking connectivity... done.
     'dht_timeout': 60
 }
 ```
-1. Configure gcloud auth: `export PATH=/usr/lib/google-cloud-sdk/bin/:$PATH && gcloud auth configure-docker`
-1. Update the project and build it using the relevant node branch: `git pull && NODE=hackathon make build`
+* Configure gcloud auth: `export PATH=/usr/lib/google-cloud-sdk/bin/:$PATH && gcloud auth configure-docker`
+* Update the project and build it using the relevant node branch: `git pull && NODE=hackathon make build`
 ```Already up-to-date.
 gcloud credential helpers already registered correctly.
 make[1]: Entering directory '/root/spacemesh/devnet'
@@ -241,14 +241,14 @@ make[1]: Leaving directory '/root/spacemesh/devnet'
 
 ## Running the implemented tests on devnet
 All tests are encapsulated in a single file name tests.py
-1. Run the tests: `make run`
+* Run the tests: `make run`
 ```make[1]: Entering directory '/root/spacemesh/devnet'
 make[1]: Leaving directory '/root/spacemesh/devnet'
 Error response from daemon: network with name devnet already exists
 ```
 ## What to expect as a result
-1. Results can be find the tests output file: `more logs/test.log`
-1. The bottom of the file includes the number of tests that were run and OK if everything is okay or errors if the tests failed
+* Results can be find the tests output file: `more logs/test.log`
+* The bottom of the file includes the number of tests that were run and OK if everything is okay or errors if the tests failed
 ```.
 ----------------------------------------------------------------------
 Ran 3 tests in 111.561s
