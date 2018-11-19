@@ -12,7 +12,7 @@ The following documentation assumes no prior knowledge on the setup and also sho
 How to setup the environment
 1. [Create a new ubuntu VM using GCP](https://cloud.google.com/compute/docs/instances/create-start-instance)
 1. Connect the created machine using `sudo docker run --rm -ti --volumes-from gcloud-config google/cloud-sdk gcloud compute --project "spacemesh-198810" ssh --zone "us-east4-c" "devnet-test-2"` where us-east4-c is the zone you created the the VM and the devnet-test-2 is the machine name you selected for.
-```WARNING: The public SSH key file for gcloud does not exist.
+    ```WARNING: The public SSH key file for gcloud does not exist.
 WARNING: The private SSH key file for gcloud does not exist.
 WARNING: You do not have an SSH key for gcloud.
 WARNING: SSH keygen will be executed to generate a key.
@@ -67,7 +67,7 @@ root@devnet-test-2:~#```
 ## Installation and configuration
 1. Create a new folder `mkdir -p /root/spacemesh/ && /root/spacemesh/`
 1. Clone the project: `git clone https://github.com/spacemeshos/devnet.git && cd devnet`
-```Cloning into 'devnet'...
+    ```Cloning into 'devnet'...
 remote: Enumerating objects: 102, done.
 remote: Counting objects: 100% (102/102), done.
 remote: Compressing objects: 100% (68/68), done.
