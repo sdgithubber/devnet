@@ -76,10 +76,11 @@ remote: Compressing objects: 100% (68/68), done.
 remote: Total 1713 (delta 68), reused 63 (delta 34), pack-reused 1611
 Receiving objects: 100% (1713/1713), 162.36 KiB | 0 bytes/s, done.
 Resolving deltas: 100% (1200/1200), done.
-Checking connectivity... done.```
+Checking connectivity... done.
+```
 
 1. Update the project configuration that can be found in tests/config.py to use the correct GCP project name, host, created user and password to the machine
-`CONFIG = {
+```CONFIG = {
     'project': 'spacemesh-198810',
     'host': 'HOST_IP',
     'host_user': 'test',
@@ -87,10 +88,11 @@ Checking connectivity... done.```
     'no_seeders': '["0.0.0.0:7517/j7qWfWaJRVp25ZsnCu9rJ4PmhigZBtesB4YmQHqqPvtR"]',
     'node_port': 7513,
     'dht_timeout': 60
-}`
+}
+```
 1. Configure gcloud auth: `export PATH=/usr/lib/google-cloud-sdk/bin/:$PATH && gcloud auth configure-docker`
 1. Update the project and build it using the relevant node branch: `git pull && NODE=hackathon make build`
-`Already up-to-date.
+```Already up-to-date.
 gcloud credential helpers already registered correctly.
 make[1]: Entering directory '/root/spacemesh/devnet'
 Sending build context to Docker daemon  293.4kB
@@ -237,19 +239,22 @@ ff6f438bec54: Layer already exists
 d8e80354a27b: Layer already exists
 9dfa40a0da3b: Layer already exists
 latest: digest: sha256:312dbd87cf89b32ac6c57d3ebcd8cac6da04d07f0fa4ff88dc253bb62532449d size: 3049
-make[1]: Leaving directory '/root/spacemesh/devnet'`
+make[1]: Leaving directory '/root/spacemesh/devnet'
+```
 
 ## Running the implemented tests on devnet
 All tests are encapsulated in a single file name tests.py
 1. Run the tests: `make run`
-`make[1]: Entering directory '/root/spacemesh/devnet'
+```make[1]: Entering directory '/root/spacemesh/devnet'
 make[1]: Leaving directory '/root/spacemesh/devnet'
-Error response from daemon: network with name devnet already exists`
-What to expect as a result
+Error response from daemon: network with name devnet already exists
+```
+## What to expect as a result
 1. Results can be find the tests output file: more 
 1. The bottom of the file includes the number of tests that were run and OK if everything is okay or errors if the tests failed
-`.
+```.
 ----------------------------------------------------------------------
 Ran 3 tests in 111.561s
 
-OK`
+OK
+```
