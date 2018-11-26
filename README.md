@@ -11,6 +11,7 @@ The following documentation assumes no prior knowledge on the setup and also sho
 ## Setting up an environment 
 How to setup the environment
 * [Create a new ubuntu VM using GCP](https://cloud.google.com/compute/docs/instances/create-start-instance)
+* Note! When creating the VM don't forget to look for the "Identity and API access" section, and select "Allow full access to all Cloud APIs"
 * Connect the created machine using `sudo docker run --rm -ti --volumes-from gcloud-config google/cloud-sdk gcloud compute --project "spacemesh-198810" ssh --zone "us-east4-c" "devnet-test-2"` where us-east4-c is the zone you created the the VM and the devnet-test-2 is the machine name you selected for.
 ```WARNING: The public SSH key file for gcloud does not exist.
 WARNING: The private SSH key file for gcloud does not exist.
