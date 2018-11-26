@@ -107,7 +107,7 @@ Checking connectivity... done.
 }
 ```
 * Configure gcloud auth: `export PATH=/usr/lib/google-cloud-sdk/bin/:$PATH && gcloud auth configure-docker`
-* Update the project and build it using the relevant node branch: `git pull && NODE=hackathon make build_node && NODE=hackathon make build`
+* Update the project and build it using the relevant node branch: `git pull && gcloud auth configure-docker && NODE=hackathon make build_node && make build_agent`
 ```Already up-to-date.
 gcloud credential helpers already registered correctly.
 make[1]: Entering directory '/root/spacemesh/devnet'
