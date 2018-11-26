@@ -61,6 +61,7 @@ Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.15.0-1021-gcp x86_64)
 Last login: Wed Nov 14 22:42:16 2018 from 52.202.226.187
 root@devnet-test-2:~#
 ```
+* [Enable SSH access using password to the machine](https://askubuntu.com/questions/101670/how-can-i-allow-ssh-password-authentication-from-only-certain-ip-addresses)
 
 * Create a local user on the machine: `sudo useradd test`
 * Set password `sudo passwd test`
