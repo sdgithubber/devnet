@@ -67,7 +67,7 @@ root@devnet-test-2:~#
 * Install make `apt install make`
 
 ## Installation and configuration
-* Create a new folder `mkdir -p /root/spacemesh/ && /root/spacemesh/`
+* Create a new folder `mkdir -p /root/spacemesh/ && cd /root/spacemesh/`
 * Clone the project: `git clone https://github.com/spacemeshos/devnet.git && cd devnet`
 ```Cloning into 'devnet'...
 remote: Enumerating objects: 102, done.
