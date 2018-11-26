@@ -58,7 +58,9 @@ Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.15.0-1021-gcp x86_64)
 
 *** System restart required ***
 Last login: Wed Nov 14 22:42:16 2018 from 52.202.226.187
-root@devnet-test-2:~#```
+root@devnet-test-2:~#
+```
+
 * Create a local user on the machine: `sudo useradd test`
 * Set password `sudo passwd test`
 * Add the user to the docker group `sudo usermod -aG docker test`
