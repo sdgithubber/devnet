@@ -64,7 +64,6 @@ def list_all(contexts):
 if __name__ == '__main__':
     config_file = os.path.join(os.path.expanduser('~'), '.kube', 'config')
     contexts, active_context = config.list_kube_config_contexts(config_file)
-    list_all(contexts)
     # create deployment in every cluster
     for ctx in contexts:
         extensions_v1beta1 = client.ExtensionsV1beta1Api(config.new_client_from_config(config_file, ctx['name']))
@@ -73,4 +72,5 @@ if __name__ == '__main__':
         update_deployment(extensions_v1beta1, deployment)
     # teardown deployment in every cluster
     for ctx in contexts:
+        extensions_v1beta1 = client.ExtensionsV1beta1Api(config.new_client_from_config(config_file, ctx['name']))
         delete_deployment(extensions_v1beta1)
